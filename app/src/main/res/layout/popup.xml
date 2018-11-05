@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/popup_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="More information"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/popup_btn_dismiss"
+                android:layout_below="@+id/popup_title"
+                android:layout_alignParentRight="true"
+                android:textSize="17sp"
+                android:background="@android:drawable/ic_menu_close_clear_cancel"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/popup_Listtitle"
+                android:text="specialties"
+                android:textSize="17sp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/popup_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/popup_list"
+                android:layout_below="@id/popup_Listtitle"
+                android:textSize="17sp"
+                android:text="Hello"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <WebView
+                android:id="@+id/popup_webview"
+                android:layout_below="@+id/popup_list"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </WebView>
+
+            <Button
+                android:id="@+id/popup_btn_dismiss2"
+                android:text="Close"
+                android:textStyle="bold"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_below="@id/popup_webview"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>
