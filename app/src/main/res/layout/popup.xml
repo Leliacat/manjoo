@@ -53,6 +53,7 @@
                 android:id="@+id/popup_btn_dismiss2"
                 android:text="Close"
                 android:textStyle="bold"
+                android:textColor="@android:color/white"
                 android:backgroundTint="@color/colorAccent"
                 android:layout_below="@id/popup_webview"
                 android:layout_centerHorizontal="true"

@@ -25,10 +25,10 @@ import java.util.List;
 
 public class RestaurantsListActivity extends AppCompatActivity {
 
-    private ArrayList<String> arrayList;
     private ListView listView;
     private RequestQueue queue;
     private ArrayAdapter arrayAdapter;
+    private Bundle extras;
 
     private List<Restaurant> restosList;
 
@@ -36,6 +36,14 @@ public class RestaurantsListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants_list);
+
+        listView = findViewById(R.id.restolist_listview);
+
+
+        extras = getIntent().getExtras();
+        if(extras != null) {
+            restosList = (ArrayList<Restaurant>) extras.getSerializable("restoList");
+        }
 
 
     }

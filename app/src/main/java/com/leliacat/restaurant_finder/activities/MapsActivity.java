@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Geocoder;
@@ -68,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static MapsActivity mInstance;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog alertDialog;
+    private Button btnShowList;
 
 
     @Override
@@ -79,6 +81,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        btnShowList = (Button) findViewById(R.id.map_btn_showlist);
+        btnShowList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent listIntent = new Intent(MapsActivity.this, RestaurantsListActivity.class);
+                Bundle bundle = new Bundle;
+                bundle.putSerializable("ARRAYLIST",restosList);
+                listIntent.putExtra("restosList", bundle);
+                startActivity(listIntent);
+            }
+        });
 
         mInstance = this;
         queue = Volley.newRequestQueue(this);
@@ -250,7 +265,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ////////////////////////////////////// GET ALL RESTAURANTS OBJECTS  /////////////////////////////////////
     //////////// more info on this link :  https://developer.android.com/training/volley/simple  ///////////
 
-    public void getRestaurants() {
+    public ArrayList<Restaurant> getRestaurants() {
         final Restaurant resto = new Restaurant();
 
         String lat = String.valueOf(currentLocation.getLatitude());
@@ -315,7 +330,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d("RESTO_NAME",  resto.getName());
 
                                 // assign value to rating property of the Restaurant object
-                                Double rating = restaurant.getJSONObject("user_rating").getDouble("aggregate_rating") ;
+                                Double rating = restaurant.getJSONObject("user_rating").getDouble("aggregate_rating");
                                 Log.d("RESTO_RATING_", "number of stars " + rating.toString());
                                 resto.setRating(rating);
                                 Log.d("RESTO_RATING_", String.valueOf(resto.getRating()));
@@ -373,6 +388,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Adding the request to the queue along with a unique string tag
         /*MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );*/
          queue.add(jsonObjectRequest);
+         return restosList;
     }
 
 
@@ -430,7 +446,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("RESTO_TAG", "onInfoWindowClick: " + marker.getTag().toString());
         Restaurant resto = (Restaurant) marker.getTag();
         getRestaurantDetails(resto);
-
     }
 
     @Override
