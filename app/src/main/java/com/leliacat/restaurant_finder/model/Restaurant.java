@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Restaurant {
 
+    private int id;
     private String name;
     private String categories;
     private Double rating;
@@ -76,7 +77,7 @@ public class Restaurant {
 		}*/
 
 
-///////////////////////////////////////// CONSTRUCTORS ///////////////////////////////////////
+    ///////////////////////////////////////// CONSTRUCTORS ///////////////////////////////////////
 
 
     public Restaurant() {
@@ -94,6 +95,10 @@ public class Restaurant {
 
     ////////////////////////////////////// GETTERS & SETTERS /////////////////////////////////////
 
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getName() {
         return name;
@@ -115,9 +120,7 @@ public class Restaurant {
         return average_cost_for_two;
     }
 
-    public void setAverage_cost_for_two(int average_cost_for_two) {
-        this.average_cost_for_two = average_cost_for_two;
-    }
+    public void setAverage_cost_for_two(int average_cost_for_two) { this.average_cost_for_two = average_cost_for_two; }
 
     public List<String> getAddress() {
         return address;

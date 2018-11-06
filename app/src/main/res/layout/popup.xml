@@ -31,7 +31,7 @@
                 android:layout_height="30dp" />
 
             <TextView
-                android:id="@+id/popup_Listtitle"
+                android:id="@+id/popup_specialties"
                 android:text="specialties"
                 android:textSize="17sp"
                 android:layout_marginLeft="20dp"
@@ -39,18 +39,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/popup_list"
-                android:layout_below="@id/popup_Listtitle"
-                android:textSize="17sp"
-                android:text="Hello"
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <WebView
                 android:id="@+id/popup_webview"
-                android:layout_below="@+id/popup_list"
+                android:layout_below="@+id/popup_specialties"
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">

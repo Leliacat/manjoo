@@ -14,17 +14,12 @@ public class Constants {
     public static final String URL_COMPLEMENT_3 = "&radius=20000&sort=rating&order=desc"; // limite le champ de recherche à rayon de 5000 mètres autour des coordonnées définies précédemment
                                                                                          // range les résultats en fonction des notes, du plus grand au plus petit
 
-    /* "https://developers.zomato.com/api/v2.1/search?entity_type=city&count=30&lat=34.1381168&lon=-118.355567&radius=3000&sort=rating&order=desc";*/
-    //https://developers.zomato.com/api/v2.1/search?count=30&lat=34.1381168&lon=-118.355567&radius=3000&sort=rating&order=desc
 
-    // curl -X GET --header "Accept: application/json"
-    // --header "user-key: deb242b665c4d425be528ddd7cc969e8"
-    // "https://developers.zomato.com/api/v2.1/search?entity_type=city&count=30&lat=34.1381168&lon=-118.355567&radius=3000&sort=rating&order=desc"
+   public static final String URL_RESTO_DETAILS = "https://developers.zomato.com/api/v2.1/restaurant?res_id=";
 
 
-
+    // we will use it to get a random index in the list of restaurants
     public static int randomInt(int max, int min) {
         return new Random().nextInt(max - min) + min;
-
     }
 }

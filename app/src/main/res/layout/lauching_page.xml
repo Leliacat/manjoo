@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
-        android:alpha=".25"
+        android:alpha=".3"
         app:srcCompat="@drawable/kawaii_food_background" />
 
     <TextView

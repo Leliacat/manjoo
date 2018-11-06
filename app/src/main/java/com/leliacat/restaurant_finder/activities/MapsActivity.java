@@ -2,6 +2,7 @@ package com.leliacat.restaurant_finder.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -16,6 +17,11 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -54,11 +60,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private static final LatLng ARCTIC = new LatLng(58.5010733,-52.6292835);
+    public ArrayList<Restaurant> restosList;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Location currentLocation;
     private RequestQueue queue;
     private static MapsActivity mInstance;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog alertDialog;
 
 
     @Override
@@ -209,7 +218,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-//////////////////////////////////// METHODS TO HANDLE API REQUESTS ///////////////////////////////
+//////////////////////////////////// OTHER METHOD TO HANDLE API REQUESTS ///////////////////////////////
 
     /////////found on this link : https://androidclarified.com/android-volley-example///////////
 
@@ -238,8 +247,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    ///////////////////////////////// GET ALL RESTAURANTS OBJECTS  ////////////////////////////////
-    /////// more info on this link :  https://developer.android.com/training/volley/simple
+    ////////////////////////////////////// GET ALL RESTAURANTS OBJECTS  /////////////////////////////////////
+    //////////// more info on this link :  https://developer.android.com/training/volley/simple  ///////////
 
     public void getRestaurants() {
         final Restaurant resto = new Restaurant();
@@ -268,6 +277,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d("ZOMATO_name ", restaurant.getString("name"));
                                 Log.d("ZOMATO_location ", restaurant.getJSONObject("location").toString());
 
+                                int id = Integer.parseInt(restaurant.getJSONObject("R").getString("id"));
+                                Log.d("RESTO_ID", "onResponse: ");
+                                resto.setId(id);
+
                                 // get restaurant coordinates
                                 Double latitude = restaurant.getJSONObject("location").getDouble("latitude");
                                 Double longitude = restaurant.getJSONObject("location").getDouble("longitude");
@@ -276,7 +289,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 // assign value to property coordinates of the Restaurant object
                                 LatLng restoCoordinates = new LatLng(latitude,longitude);
                                 resto.setCoordinates(restoCoordinates);
-                                Log.d("LATLNG", "onResponse: " + resto.getCoordinates().toString());
+                                Log.d("RESTO_LATLNG", "onResponse: " + resto.getCoordinates().toString());
 
                                 // assign value to property address of the Restaurant object
                                 // the JSONobject location have the following properties (that we want to put in the List address) :
@@ -328,8 +341,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 markerOptions.position(resto.getCoordinates());
                                 Marker marker = mMap.addMarker(markerOptions);
-                                marker.setTag(resto.getDetail_link());
+                                marker.setTag(resto);
 
+                                restosList.add(resto);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -362,29 +376,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void getRestaurantDetails(String url) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject restaurant = response.getJSONObject("restaurant");
-                    String URL = restaurant.getString("url");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+    ////////////////////////////////////// OTHER METHODS WITH API REQUESTS //////////////////////////////////////////
 
-            }
-        });
-        queue.add(jsonObjectRequest);
+
+    // allow to get more details about a specific restaurant
+    // exemple d'URL https://developers.zomato.com/api/v2.1/restaurant?res_id=16774318
+    public void getRestaurantDetails(Restaurant resto) {
+
+                    String weblink = resto.getDetail_link();
+
+                    dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
+                    View view = getLayoutInflater().inflate(R.layout.popup, null);
+
+                    // we get the elements from the popup layout
+                    Button dismissBtn = (Button) view.findViewById(R.id.popup_btn_dismiss);
+                    Button dismissBtn2 = (Button) view.findViewById(R.id.popup_btn_dismiss2);
+                    TextView specialties = (TextView) view.findViewById(R.id.popup_specialties);
+                    WebView webView = (WebView) view.findViewById(R.id.popup_webview);
+
+                    // adapt test of "specialties" and set onclicklisteners on dismiss buttons
+                    specialties.setText( "Specialties: " + resto.getCategories());
+                    dismissBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
+                    dismissBtn2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    // we'll display a web content inside our app through the webview element
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.setWebViewClient(new WebViewClient());
+                    webView.loadUrl(weblink);
+
+                    dialogBuilder.setView(view);
+                    alertDialog = dialogBuilder.create();
+                    alertDialog.show();
+
     }
+
+
+
+    ////////////////////////////////////// METHODS IMPLEMENTED //////////////////////////////////////////
+    //////////// FROM GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener //////////////
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        getRestaurantDetails(marker.getTag().toString());
+        Log.d("RESTO_TAG", "onInfoWindowClick: " + marker.getTag().toString());
+        Restaurant resto = (Restaurant) marker.getTag();
+        getRestaurantDetails(resto);
+
     }
 
     @Override
