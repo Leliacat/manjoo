@@ -70,6 +70,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog alertDialog;
     private Button btnShowList;
+    private Intent listIntent;
+    private ArrayList<Restaurant> restosList;
 
 
     @Override
@@ -82,22 +84,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-       /* btnShowList = (Button) findViewById(R.id.map_btn_showlist);
+        btnShowList = (Button) findViewById(R.id.map_btn_showlist);
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent listIntent = new Intent(MapsActivity.this, RestaurantsListActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("ARRAYLIST",restosList);
-                listIntent.putExtra("restosList", bundle);
+                listIntent = new Intent(MapsActivity.this, RestaurantsListActivity.class);
                 startActivity(listIntent);
             }
-        });*/
+        });
 
         mInstance = this;
         queue = Volley.newRequestQueue(this);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("ARRAYLIST",restosList);
+        listIntent.putExtra("restosList", bundle);
     }
 
     @SuppressLint("MissingPermission")
@@ -357,8 +364,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 markerOptions.position(resto.getCoordinates());
                                 Marker marker = mMap.addMarker(markerOptions);
                                 marker.setTag(resto.getId());
-
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -398,43 +405,146 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // exemple d'URL https://developers.zomato.com/api/v2.1/restaurant?res_id=16774318
     public void getRestaurantDetails(String id) {
 
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constants.URL_RESTO_DETAILS + id , new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String weblink = response.getString("url");
+                            dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
+                            View view = getLayoutInflater().inflate(R.layout.popup, null);
+
+                            // we get the elements from the popup layout
+                            Button dismissBtn = (Button) view.findViewById(R.id.popup_btn_dismiss);
+                            Button dismissBtn2 = (Button) view.findViewById(R.id.popup_btn_dismiss2);
+                            TextView specialties = (TextView) view.findViewById(R.id.popup_specialties);
+                            WebView webView = (WebView) view.findViewById(R.id.popup_webview);
+
+                            // we'll display a web content inside our app through the webview element
+                            webView.getSettings().setJavaScriptEnabled(true);
+                            webView.setWebViewClient(new WebViewClient());
+                            webView.loadUrl(weblink);
+                            specialties.setText( "Specialties: " + response.getString("cuisines"));
 
 
-                   /* String weblink = resto.getDetail_link();
+                            dialogBuilder.setView(view);
+                            alertDialog = dialogBuilder.create();
+                            alertDialog.show();
 
-                    dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
-                    View view = getLayoutInflater().inflate(R.layout.popup, null);
+                            /*StringBuilder stringBuilder = new StringBuilder();
 
-                    // we get the elements from the popup layout
-                    Button dismissBtn = (Button) view.findViewById(R.id.popup_btn_dismiss);
-                    Button dismissBtn2 = (Button) view.findViewById(R.id.popup_btn_dismiss2);
-                    TextView specialties = (TextView) view.findViewById(R.id.popup_specialties);
-                    WebView webView = (WebView) view.findViewById(R.id.popup_webview);
+                            cities = response.getJSONArray("cities");
 
-                    // adapt test of "specialties" and set onclicklisteners on dismiss buttons
-                    specialties.setText( "Specialties: " + resto.getCategories());
-                    dismissBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
+                            for (int i = 0; i < cities.length(); i++) {
+                                JSONObject citiesObj = cities.getJSONObject(i);
+
+                                stringBuilder.append("City: " + citiesObj.getString("name")
+                                        + "\n" + "Distance: " + citiesObj.getString("distance")
+                                        + "\n" + "Population: "
+                                        + citiesObj.getString("population"));
+
+                                stringBuilder.append("\n\n");
+
+                            }
+
+                            popList.setText(stringBuilder);*/
+
+
+                            dismissBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
+                            dismissBtn2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
-                    dismissBtn2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            // Passing some request headers
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap();
+                /*headers.put("Accept:", "application/json");*/
+                headers.put("user-key", Constants.API_KEY);
+                return headers;
+            }
+        };
+
+        //Adding the request to the queue along with a unique string tag
+        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
+    }
+
+
+
+
+    public void getRestaurantMenu(String id) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constants.URL_RESTO_MENU + id, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String menu = response.getJSONArray("daily_menu").getJSONObject(0).getJSONArray("dishes").getString(1);
+                            dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
+                            View view = getLayoutInflater().inflate(R.layout.popup, null);
+
+                            // we get the elements from the popup layout
+                            Button dismissBtn = (Button) view.findViewById(R.id.popup_btn_dismiss);
+                            Button dismissBtn2 = (Button) view.findViewById(R.id.popup_btn_dismiss2);
+                            TextView specialties = (TextView) view.findViewById(R.id.popup_specialties);
+                            WebView webView = (WebView) view.findViewById(R.id.popup_webview);
+
+
+
+                            dialogBuilder.setView(view);
+                            alertDialog = dialogBuilder.create();
+                            alertDialog.show();
+
+                            dismissBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
+                            dismissBtn2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.dismiss();
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
-*/
-                    // we'll display a web content inside our app through the webview element
-                   /* webView.getSettings().setJavaScriptEnabled(true);
-                    webView.setWebViewClient(new WebViewClient());
-                    webView.loadUrl(weblink);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-                    dialogBuilder.setView(view);
-                    alertDialog = dialogBuilder.create();
-                    alertDialog.show();*/
+            }
+        }) {
+            // Passing some request headers
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap();
+                /*headers.put("Accept:", "application/json");*/
+                headers.put("user-key", Constants.API_KEY);
+                return headers;
+            }
+        };
 
+        //Adding the request to the queue along with a unique string tag
+        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
     }
 
 

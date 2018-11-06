@@ -16,6 +16,9 @@ public class Constants {
 
 
    public static final String URL_RESTO_DETAILS = "https://developers.zomato.com/api/v2.1/restaurant?res_id=";
+    public static final String URL_RESTO_MENU = "https://developers.zomato.com/api/v2.1/dailymenu?res_id=";
+
+
 
 
     // we will use it to get a random index in the list of restaurants
