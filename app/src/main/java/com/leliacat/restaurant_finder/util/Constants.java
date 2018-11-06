@@ -11,7 +11,7 @@ public class Constants {
     //to make custom requests according to user location
     public static final String URL_COMPLEMENT_1 = "&lat=";                                // permet d'ajouter une latitude spécifique
     public static final String URL_COMPLEMENT_2 = "&lon=";                               // pour ajouter une longitude spécifique
-    public static final String URL_COMPLEMENT_3 = "&radius=20000&sort=rating&order=desc"; // limite le champ de recherche à rayon de 5000 mètres autour des coordonnées définies précédemment
+    public static final String URL_COMPLEMENT_3 = "&radius=10000&sort=rating&order=desc"; // limite le champ de recherche à rayon de 5000 mètres autour des coordonnées définies précédemment
                                                                                          // range les résultats en fonction des notes, du plus grand au plus petit
 
 

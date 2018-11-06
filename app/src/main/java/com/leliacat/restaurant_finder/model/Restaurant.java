@@ -2,11 +2,12 @@ package com.leliacat.restaurant_finder.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Restaurant {
+public class Restaurant implements Serializable {
 
-    private int id;
+    private String id;
     private String name;
     private String categories;
     private Double rating;
@@ -83,22 +84,14 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(String name, String categories, Double rating, int average_cost_for_two, String currency, List<String> address, LatLng coordinates) {
-        this.name = name;
-        this.categories = categories;
-        this.rating = rating;
-        this.average_cost_for_two = average_cost_for_two;
-        this.currency = currency;
-        this.address = address;
-        this.coordinates = coordinates;
-    }
+
 
     ////////////////////////////////////// GETTERS & SETTERS /////////////////////////////////////
 
 
-    public int getId() { return id; }
+    public String getId() { return id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(String id) { this.id = id; }
 
     public String getName() {
         return name;

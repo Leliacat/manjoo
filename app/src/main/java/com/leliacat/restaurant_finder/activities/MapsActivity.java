@@ -62,7 +62,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private static final LatLng ARCTIC = new LatLng(58.5010733,-52.6292835);
-    public ArrayList<Restaurant> restosList;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Location currentLocation;
@@ -83,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        /*btnShowList = (Button) findViewById(R.id.map_btn_showlist);*/
+       /* btnShowList = (Button) findViewById(R.id.map_btn_showlist);
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 listIntent.putExtra("restosList", bundle);
                 startActivity(listIntent);
             }
-        });
+        });*/
 
         mInstance = this;
         queue = Volley.newRequestQueue(this);
@@ -266,7 +265,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ////////////////////////////////////// GET ALL RESTAURANTS OBJECTS  /////////////////////////////////////
     //////////// more info on this link :  https://developer.android.com/training/volley/simple  ///////////
 
-    public ArrayList<Restaurant> getRestaurants() {
+    public void getRestaurants() {
         final Restaurant resto = new Restaurant();
 
         String lat = String.valueOf(currentLocation.getLatitude());
@@ -293,7 +292,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d("ZOMATO_name ", restaurant.getString("name"));
                                 Log.d("ZOMATO_location ", restaurant.getJSONObject("location").toString());
 
-                                int id = Integer.parseInt(restaurant.getJSONObject("R").getString("id"));
+                                String id = restaurant.getJSONObject("R").getString("res_id");
                                 Log.d("RESTO_ID", "onResponse: ");
                                 resto.setId(id);
 
@@ -357,9 +356,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 markerOptions.position(resto.getCoordinates());
                                 Marker marker = mMap.addMarker(markerOptions);
-                                marker.setTag(resto);
+                                marker.setTag(resto.getId());
 
-                                restosList.add(resto);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -387,9 +385,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
 
         //Adding the request to the queue along with a unique string tag
-        /*MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );*/
-         queue.add(jsonObjectRequest);
-         return restosList;
+        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
+        /* queue.add(jsonObjectRequest);*/
+
     }
 
 
@@ -398,9 +396,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     // allow to get more details about a specific restaurant
     // exemple d'URL https://developers.zomato.com/api/v2.1/restaurant?res_id=16774318
-    public void getRestaurantDetails(Restaurant resto) {
+    public void getRestaurantDetails(String id) {
 
-                    String weblink = resto.getDetail_link();
+
+
+                   /* String weblink = resto.getDetail_link();
 
                     dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
                     View view = getLayoutInflater().inflate(R.layout.popup, null);
@@ -425,15 +425,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             alertDialog.dismiss();
                         }
                     });
-
+*/
                     // we'll display a web content inside our app through the webview element
-                    webView.getSettings().setJavaScriptEnabled(true);
+                   /* webView.getSettings().setJavaScriptEnabled(true);
                     webView.setWebViewClient(new WebViewClient());
                     webView.loadUrl(weblink);
 
                     dialogBuilder.setView(view);
                     alertDialog = dialogBuilder.create();
-                    alertDialog.show();
+                    alertDialog.show();*/
 
     }
 
@@ -445,8 +445,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onInfoWindowClick(Marker marker) {
         Log.d("RESTO_TAG", "onInfoWindowClick: " + marker.getTag().toString());
-        Restaurant resto = (Restaurant) marker.getTag();
-        getRestaurantDetails(resto);
+        String id = marker.getTag().toString();
+        getRestaurantDetails(id);
     }
 
     @Override
