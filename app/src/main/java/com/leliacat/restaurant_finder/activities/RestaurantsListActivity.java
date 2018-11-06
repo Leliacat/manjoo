@@ -43,6 +43,11 @@ public class RestaurantsListActivity extends AppCompatActivity {
         extras = getIntent().getExtras();
         if(extras != null) {
             restosList = (ArrayList<Restaurant>) extras.getSerializable("restoList");
+            arrayAdapter = new ArrayAdapter(RestaurantsListActivity.this,
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1, restosList);
+            listView.setAdapter(arrayAdapter);
+            arrayAdapter.notifyDataSetChanged();
         }
 
 

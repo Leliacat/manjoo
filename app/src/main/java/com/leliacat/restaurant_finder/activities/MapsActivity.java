@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -82,13 +83,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        btnShowList = (Button) findViewById(R.id.map_btn_showlist);
+        /*btnShowList = (Button) findViewById(R.id.map_btn_showlist);*/
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent listIntent = new Intent(MapsActivity.this, RestaurantsListActivity.class);
-                Bundle bundle = new Bundle;
+                Bundle bundle = new Bundle();
                 bundle.putSerializable("ARRAYLIST",restosList);
                 listIntent.putExtra("restosList", bundle);
                 startActivity(listIntent);
