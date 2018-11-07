@@ -19,7 +19,7 @@
                 android:layout_margin="5sp">
 
                 <ImageView
-                    android:id="@+id/iconInfo"
+                    android:id="@+id/custominfo_iconInfo"
                     android:src="@drawable/kawaii_suitcase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                     android:textColor="@color/colorPrimary"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_below="@+id/iconInfo"
+                    android:layout_below="@+id/custominfo_iconInfo"
                     android:layout_centerHorizontal="true"/>
 
 
@@ -50,7 +50,7 @@
                     android:layout_centerHorizontal="true"/>
 
                 <Button
-                    android:id="@+id/btn"
+                    android:id="@+id/custominfo_btn_moreinfo"
                     android:text="More info..."
                     android:textStyle="bold"
                     android:fontFamily="@font/fredokaone"

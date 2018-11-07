@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         this.context = context;
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = layoutInflater.inflate(R.layout.custom_info_window,null);
+
     }
 
     @Override
@@ -39,6 +41,34 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         Drawable drawable = context.getResources().getDrawable(R.drawable.kawaii_suitcase);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         cutepic.setImageBitmap(bitmap);*/
+
+
+       if (marker.getTag().toString().equals("HERE")) {
+
+          Button button = (Button) view.findViewById(R.id.custominfo_btn_moreinfo);
+          button.setVisibility(View.GONE);
+
+          ImageView img = (ImageView) view.findViewById(R.id.custominfo_iconInfo);
+          Drawable drawable = context.getResources().getDrawable(R.drawable.kungfun_panda);
+          img.setImageDrawable(drawable);
+
+
+       }else if(marker.getTag().toString().equals("TARDIS")){
+
+           Button button = (Button) view.findViewById(R.id.custominfo_btn_moreinfo);
+           button.setVisibility(View.GONE);
+
+           ImageView img = (ImageView) view.findViewById(R.id.custominfo_iconInfo);
+           img.setVisibility(View.GONE);
+       }
+       else {
+           Button button = (Button) view.findViewById(R.id.custominfo_btn_moreinfo);
+           button.setVisibility(View.VISIBLE);
+
+           ImageView img = (ImageView) view.findViewById(R.id.custominfo_iconInfo);
+           Drawable drawable = context.getResources().getDrawable(R.drawable.kawaii_suitcase);
+           img.setImageDrawable(drawable);
+       }
 
         TextView title = (TextView) view.findViewById(R.id.custominfo_title);
         title.setText(marker.getTitle());

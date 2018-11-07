@@ -14,7 +14,8 @@ public class Restaurant implements Serializable {
     private int average_cost_for_two;
     private String currency;
     private List<String> address;
-    private LatLng coordinates;
+    private Double latitude;
+    private Double longitude;
     private String detail_link;
 
     //JSON OBJECT FROM API __ request URL : https://developers.zomato.com/api/v2.1/search
@@ -78,7 +79,7 @@ public class Restaurant implements Serializable {
 		}*/
 
 
-    ///////////////////////////////////////// CONSTRUCTORS ///////////////////////////////////////
+    ////////////////////////////////////////////////////////////// CONSTRUCTORS /////////////////////////////////////////////////////
 
 
     public Restaurant() {
@@ -86,7 +87,7 @@ public class Restaurant implements Serializable {
 
 
 
-    ////////////////////////////////////// GETTERS & SETTERS /////////////////////////////////////
+    /////////////////////////////////////////////////////////// GETTERS & SETTERS ///////////////////////////////////////////////////
 
 
     public String getId() { return id; }
@@ -123,14 +124,6 @@ public class Restaurant implements Serializable {
         this.address = address;
     }
 
-    public LatLng getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(LatLng coordinates) {
-        this.coordinates = coordinates;
-    }
-
     public String getCategories() {
         return categories;
     }
@@ -150,4 +143,12 @@ public class Restaurant implements Serializable {
     public String getDetail_link() { return detail_link; }
 
     public void setDetail_link(String detail_link) { this.detail_link = detail_link; }
+
+    public Double getLatitude() { return latitude; }
+
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+
+    public Double getLongitude() { return longitude; }
+
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
 }
