@@ -49,7 +49,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/custominfo_btn_moreinfo"
+                    android:id="@+id/listrow_btn_moreinfo"
                     android:text="More info..."
                     android:textStyle="bold"
                     android:fontFamily="@font/fredokaone"
