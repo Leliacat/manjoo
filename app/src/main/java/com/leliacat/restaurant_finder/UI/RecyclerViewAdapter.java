@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.leliacat.restaurant_finder.activities.DetailsRestoActivity;
 import com.leliacat.restaurant_finder.activities.ListRestoActivity;
 import com.leliacat.restaurant_finder.activities.MapsActivity;
 import com.leliacat.restaurant_finder.data.DatabaseHandler;
@@ -58,7 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Restaurant restaurant = restaurants.get(position);
         holder.restaurantName.setText(restaurant.getName());
         holder.specialties.setText(restaurant.getCategories());
-        holder.average_cost_for_two.setText(Integer.toString(restaurant.getAverage_cost_for_two()));
+        holder.average_cost_for_two.setText( "Average cost for two: " + Integer.toString(restaurant.getAverage_cost_for_two()) + restaurant.getCurrency());
     }
 
     //*****************************************************************************************************************************
@@ -87,58 +88,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             infoButton = (Button) view.findViewById(R.id.listrow_btn_moreinfo);
 
             infoButton.setOnClickListener(this);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();// important to know which item is clicked
-                    Restaurant restaurant = restaurants.get(position);
-
-                    ////go to next screen --> DetailsActivity
-                    //                    Intent intent = new Intent(context, DetailsActivity.class);
-                    //                    intent.putExtra("name", restaurant.getName());
-                    //                    intent.putExtra("specialties", restaurant.getCategories());
-                    //                    intent.putExtra("address", restaurant.getAddress().toString());
-                    //                    intent.putExtra("rating", restaurant.getRating());
-                    //                    intent.putExtra("cost_for_two", String.valueOf(restaurant.getAverage_cost_for_two());
-                    //                    intent.putExtra("link", restaurant.getDetail_link());
-                    //                    context.startActivity(intent);
-
-                    // open popup with details
-                    alertDialogBuilder = new AlertDialog.Builder(context);
-                    v = inflater.inflate(R.layout.popup, null);
-
-                    alertDialogBuilder.setView(v);
-                    alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-
-                    // we get the elements from the popup layout
-                    Button dismissBtn = (Button) v.findViewById(R.id.popup_btn_dismiss);
-                    Button dismissBtn2 = (Button) v.findViewById(R.id.popup_btn_dismiss2);
-                    TextView title = (TextView) v.findViewById(R.id.popup_title);
-                    TextView specialties = (TextView) v.findViewById(R.id.popup_specialties);
-                    TextView rating = (TextView) v.findViewById(R.id.popup_rating);
-                    TextView address = (TextView) v.findViewById(R.id.popup_address);
-                    TextView price = (TextView) v.findViewById(R.id.popup_price);
-                    TextView link = (TextView) v.findViewById(R.id.popup_textlink);
-
-                    // we fill layout elements with desired text
-                    title.setText(restaurant.getName());
-                    specialties.setText(restaurant.getCategories());
-                    address.setText(restaurant.getAddress().toString());
-                    rating.setText("Rating: " + restaurant.getRating());
-                    price.setText("Average cost for two: " + String.valueOf(restaurant.getAverage_cost_for_two()) + restaurant.getCurrency());
-                    link.setText("More info on this link: " + "\n" + restaurant.getDetail_link());
-                }
-            });
+            view.setOnClickListener(this);
 
         }
 
         @Override
         public void onClick(View v) {
-             if (v.getId() == R.id.popup_btn_dismiss || v.getId() == R.id.popup_btn_dismiss2){
-                 alertDialog.dismiss();
-             }
+            int position = getAdapterPosition();// important to know which item is clicked
+            Restaurant restaurant = restaurants.get(position);
+
+            ////go to next screen --> DetailsRestoActivity
+            Intent intent = new Intent(context, DetailsRestoActivity.class);
+            intent.putExtra("name", restaurant.getName());
+            intent.putExtra("specialties", restaurant.getCategories());
+            //TODO : address arraylist of String, has to be serialized
+            /*intent.putExtra("address", restaurant.getAddress().toString());*/
+            intent.putExtra("rating", restaurant.getRating());
+            intent.putExtra("cost_for_two", String.valueOf(restaurant.getAverage_cost_for_two()));
+            intent.putExtra("currency", restaurant.getCurrency());
+            intent.putExtra("link", restaurant.getDetail_link());
+            context.startActivity(intent);
+
         }
     }
 }

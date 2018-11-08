@@ -49,6 +49,7 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
             }
         });
 
+
         db = new DatabaseHandler(this);
         restaurants =  new ArrayList<>();
         restoList = new ArrayList<>();
@@ -57,24 +58,24 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
         for (Restaurant place : restoList) {
             Log.d("DATABASE_TEST_LIST", place.getName());
         }
-
-        for (Restaurant resto : restoList) {
-            Restaurant restaurant = new Restaurant();
-            restaurant.setName(resto.getName());
-            restaurant.setCategories(resto.getCategories());
-            restaurant.setId(resto.getId());
-            restaurant.setAverage_cost_for_two(resto.getAverage_cost_for_two());
-            restaurants.add(restaurant);
-        }
-
         if (restoList != null){
+            for (Restaurant resto : restoList) {
+                Restaurant restaurant = new Restaurant();
+                restaurant.setName(resto.getName());
+                restaurant.setCategories(resto.getCategories());
+                restaurant.setId(resto.getId());
+                restaurant.setAverage_cost_for_two(resto.getAverage_cost_for_two());
+                restaurants.add(restaurant);
+            }
+
             recyclerView = (RecyclerView) findViewById(R.id.recyclerViewID);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerViewAdapter = new RecyclerViewAdapter(this, restoList);
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerViewAdapter.notifyDataSetChanged();
-        }else {
+
+        } else {
             /*Toast.makeText("For some reasons, informations about restaurants can't be reached.",  )*/
         }
 
