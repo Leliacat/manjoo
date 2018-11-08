@@ -52,6 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +60,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, Serializable {
 
     private GoogleMap mMap;
     private static final LatLng ARCTIC = new LatLng(58.5010733,-52.6292835);
@@ -77,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DatabaseHandler db;
 
 
-    //*************************************************************************************************************************************************
+    //****************************************************************  ON CREATE **********************************************************************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        restosList = new ArrayList<>();
+        /*restosList = new ArrayList<>();*/
         mInstance = this;
         queue = Volley.newRequestQueue(this);
         db = new DatabaseHandler(this);
@@ -97,33 +98,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-               /* listIntent = new Intent(MapsActivity.this, RestaurantsListActivity.class);
-                *//*Bundle bundle = new Bundle();
-                bundle.putSerializable("ARRAYLIST",restosList);
-                listIntent.putExtra("restosList", bundle);*//*
-                startActivity(listIntent);*/
+                listIntent = new Intent(MapsActivity.this, ListRestoActivity.class);
+                startActivity(listIntent);
             }
         });
 
 
     }
 
-    //*************************************************************************************************************************************************
+    //**************************************************************  ON STOP *********************************************************************
     @Override
     protected void onStop() {
         super.onStop();
-        String name = restosList.get(0).getName();
-        Log.d("RESTOLIST_NAME1", name);
+
+        for(Restaurant rst : restosList){
+            Log.d("RESTOLIST_NAMES",  rst.getName());
+        }
+
         Bundle bundle = new Bundle();
-        bundle.putSerializable("ARRAYLIST",restosList);
-        listIntent.putExtra("restosList", bundle);
+        try{
+            bundle.putSerializable("ARRAYLIST",restosList);
+            listIntent.putExtra("restosList", bundle);
+            Log.d("SERIAL_SUCCESS", "onStop: yeah, c'est dans la boiboite! " );
+        }catch (Exception e) {
+            Log.d("SERIAL_ERROR", "onStop: " + e );
+        }
 
 
+
+
+        /*deleteDatabase(Constants.DB_NAME);*/
+
+        // Get items from database
+        List<Restaurant> restaurants = db.getAllRestaurants();
+        String name = restaurants.get(0).getName();
+        Restaurant restaurant = restaurants.get(0);
+        Log.d("DB_TEST", "onStop: " + name );
+
+        this.stopLockTask();
     }
 
-    //*************************************************************************************************************************************************
+    //***************************************************************  ON MAP READY *****************************************************************
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -150,9 +165,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
-                for (Restaurant resto : restosList) {
-                    db.deleteRestaurant(resto.getId());
+
+                List results = db.getAllRestaurantsIDs();
+                for (Object idt : results){
+                    int key = Integer.parseInt(idt.toString());
+                    db.deleteRestaurant(key);
                 }
+
                 getRestaurants();
                 // Called when a new location is found by the location provider.
                 /*Log.d("GPS_Location", "onLocationChanged: " + location.toString());*/
@@ -249,7 +268,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    //*************************************************************************************************************************************************
+    //**********************************************************  ON REQUEST PERMISSIONS RESULT ********************************************************
     // FROM ANDROID DOCUMENTATION :
     // When the user responds to your app's permission request,
     // the system invokes your app's onRequestPermissionsResult() method, passing it the user response.
@@ -272,8 +291,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    //////////////////////////////////////// OTHER METHOD TO HANDLE API REQUESTS ////////////////////////////////////////////////
-    /////////found on this link : https://androidclarified.com/android-volley-example///////////////////////////////////////////
+    /////////////////////////////////////////////////////////// OTHER METHOD TO HANDLE API REQUESTS ///////////////////////////////////////////////////
+    /////////////////////////////////////////found on this link : https://androidclarified.com/android-volley-example//////////////////////////////////
     //*************************************************************************************************************************************************
 
     public static synchronized MapsActivity getInstance() {
@@ -306,8 +325,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //*************************************************************************************************************************************************
 
     public void getRestaurants() {
-        final Restaurant resto = new Restaurant();
 
+        restosList = new ArrayList<>();
         String lat = String.valueOf(currentLocation.getLatitude());
         String lng = String.valueOf(currentLocation.getLongitude());
 
@@ -327,6 +346,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             Log.d("ZOMATO_API", "onResponse: " + restaurants);
 
                             for (int i = 0; i < restaurants.length(); i ++) {
+
+                                Restaurant resto = new Restaurant();
+
                                 JSONObject restaurant = restaurants.getJSONObject(i).getJSONObject("restaurant");
                                 Log.d("ZOMATO_restaurant ", "onResponse: " + restaurant);
                                 Log.d("ZOMATO_name ", restaurant.getString("name"));
@@ -396,11 +418,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Marker marker = mMap.addMarker(markerOptions);
                                 marker.setTag(resto.getId());
 
-                                /*restosList = new ArrayList<>();*/
                                 restosList.add(resto);
                                 db.addRestaurant(resto);
 
                             }
+
+                            for (int i = 0; i< restosList.size(); i++) {
+                                Log.d("RESTOLIST_RESULTS", restosList.get(i).getName() + " __at index " + String.valueOf(i));
+                            }
+
+                            ArrayList<Restaurant> restaurantList = (ArrayList) db.getAllRestaurants();
+                            for ( Restaurant rst : restaurantList) {
+                                Log.d("DB_TEST", rst.getName());
+                            }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -531,67 +562,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
     }
 
-
-
-
-   /* public void getRestaurantMenu(String id) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constants.URL_RESTO_MENU + id, new JSONObject(),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String menu = response.getJSONArray("daily_menu").getJSONObject(0).getJSONArray("dishes").getString(1);
-                            dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
-                            View view = getLayoutInflater().inflate(R.layout.popup, null);
-
-                            // we get the elements from the popup layout
-                            Button dismissBtn = (Button) view.findViewById(R.id.popup_btn_dismiss);
-                            Button dismissBtn2 = (Button) view.findViewById(R.id.popup_btn_dismiss2);
-                            TextView specialties = (TextView) view.findViewById(R.id.popup_specialties);
-                            WebView webView = (WebView) view.findViewById(R.id.popup_webview);
-
-
-
-                            dialogBuilder.setView(view);
-                            alertDialog = dialogBuilder.create();
-                            alertDialog.show();
-
-                            dismissBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    alertDialog.dismiss();
-                                }
-                            });
-                            dismissBtn2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    alertDialog.dismiss();
-                                }
-                            });
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            // Passing some request headers
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap();
-                *//*headers.put("Accept:", "application/json");*//*
-                headers.put("user-key", Constants.API_KEY);
-                return headers;
-            }
-        };
-
-        //Adding the request to the queue along with a unique string tag
-        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
-    }
-*/
 
 
     //////////////////////////////////////////////////// METHODS IMPLEMENTED ////////////////////////////////////////////////////////

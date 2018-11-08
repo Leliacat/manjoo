@@ -37,16 +37,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RESTAURANT_TABLE = "CREATE TABLE " + Constants.TABLE_NAME + "(" +
-                Constants.KEY_PRIMARY + " INT PRIMARY KEY, " +
-                Constants.KEY_ID + " TEXT, " +
+                Constants.KEY_ID + " INT PRIMARY KEY, " +
                 Constants.KEY_RESTO_NAME + " TEXT, " +
                 Constants.KEY_RESTO_ADRESS + " TEXT, " +
                 Constants.KEY_RESTO_SPECIALTIES + " TEXT, " +
-                Constants.KEY_RESTO_RATING + " DOUBLE, " +
+                Constants.KEY_RESTO_RATING + " TEXT, " +
                 Constants.KEY_RESTO_AVERAGE_COST_FOR_2  + " INT, " +
                 Constants.KEY_RESTO_CURRENCY + " TEXT, " +
-                Constants.KEY_RESTO_LATITUDE + " DOUBLE, " +
-                Constants.KEY_RESTO_LONGITUDE + " DOUBLE, " +
+                Constants.KEY_RESTO_LATITUDE + " TEXT, " +
+                Constants.KEY_RESTO_LONGITUDE + " TEXT, " +
                 Constants.KEY_RESTO_DETAILS_LINK + " TEXT);";
         db.execSQL(CREATE_RESTAURANT_TABLE);
     }
@@ -65,14 +64,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Constants.KEY_ID, resto.getId());
+        values.put(Constants.KEY_ID, Integer.parseInt(resto.getId()));
         values.put(Constants.KEY_RESTO_NAME, resto.getName());
         values.put(Constants.KEY_RESTO_SPECIALTIES, resto.getCategories());
-        values.put(Constants.KEY_RESTO_RATING, resto.getRating());
+        values.put(Constants.KEY_RESTO_RATING, resto.getRating().toString() );
         values.put(Constants.KEY_RESTO_AVERAGE_COST_FOR_2, resto.getAverage_cost_for_two());
         values.put(Constants.KEY_RESTO_CURRENCY, resto.getCurrency());
-        values.put(Constants.KEY_RESTO_LATITUDE, resto.getLatitude());
-        values.put(Constants.KEY_RESTO_LONGITUDE, resto.getLongitude());
+        values.put(Constants.KEY_RESTO_LATITUDE, resto.getLatitude().toString());
+        values.put(Constants.KEY_RESTO_LONGITUDE, resto.getLongitude().toString());
         values.put(Constants.KEY_RESTO_DETAILS_LINK, resto.getDetail_link());
 
 
@@ -136,13 +135,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return restoList;
     }
 
+    // Get all restaurants ID *******************************************************************************************************************
+    public List<Integer> getAllRestaurantsIDs(){
+        List<Integer> results = new ArrayList<Integer>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String [] columns = {Constants.KEY_ID};
+        Cursor cursor = db.query(Constants.TABLE_NAME, columns, null, null, null, null, null);
+        int id = cursor.getColumnIndex(Constants.KEY_ID);
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            Integer rowId = cursor.getInt(id);
+            results.add(rowId);
+        }
+        cursor.close();
+        db.close();
+
+        return results;
+    }
+
+
+
     // Update restaurant ************************************************************************************************************************
     public int updateRestaurant (Restaurant resto) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(Constants.KEY_ID, resto.getId());
+        values.put(Constants.KEY_ID, Integer.parseInt(resto.getId()));
         values.put(Constants.KEY_RESTO_NAME, resto.getName());
         values.put(Constants.KEY_RESTO_SPECIALTIES, resto.getCategories());
         values.put(Constants.KEY_RESTO_RATING, resto.getRating());
@@ -157,7 +175,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Delete restaurant ************************************************************************************************************************
-    public void deleteRestaurant(String id) {
+    public void deleteRestaurant(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(Constants.TABLE_NAME, Constants.KEY_ID + " =?",
@@ -173,5 +191,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
         return cursor.getCount();
     }
+
+
+
 
 }

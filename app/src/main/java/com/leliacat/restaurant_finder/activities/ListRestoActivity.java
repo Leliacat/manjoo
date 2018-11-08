@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.leliacat.restaurant_finder.data.DatabaseHandler;
@@ -14,16 +15,18 @@ import com.leliacat.restaurant_finder.model.Restaurant;
 import com.leliacat.restaurant_finder.R;
 import com.leliacat.restaurant_finder.UI.RecyclerViewAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListRestoActivity extends AppCompatActivity {
+public class ListRestoActivity extends AppCompatActivity implements Serializable {
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
     private List<Restaurant> restoList;
     private List<Restaurant> restaurants;
     private DatabaseHandler db;
+    private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +42,38 @@ public class ListRestoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-
-
-
             }
         });
+
+
 
         db = new DatabaseHandler(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewID);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        restoList = new ArrayList<>();
+
         restaurants =  new ArrayList<>();
 
-        // Get items from database
+       /* Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            Serializable serial = extras.getSerializable("restosList");
+
+            restoList = (ArrayList<Restaurant>) serial;
+
+            Log.d("RESTOLIST_NAMES_2",  restoList.get(0).getName());
+            Log.d("RESTOLIST_NAMES_2",  restoList.get(19).getName());
+        }*/
+
+        /*for(Restaurant rst : restoList){
+            Log.d("RESTOLIST_NAMES_2",  rst.getName());
+        }*/
+
+       // Get items from database
         restoList = db.getAllRestaurants();
+        for (Restaurant place : restoList) {
+            Log.d("DATABASE_TEST_LIST", place.getName());
+        }
 
         for (Restaurant resto : restoList) {
             Restaurant restaurant = new Restaurant();
@@ -66,7 +85,7 @@ public class ListRestoActivity extends AppCompatActivity {
             restaurants.add(restaurant);
         }
 
-        recyclerViewAdapter = new RecyclerViewAdapter(this, restaurants);
+        recyclerViewAdapter = new RecyclerViewAdapter(this, restoList);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.notifyDataSetChanged();
     }
