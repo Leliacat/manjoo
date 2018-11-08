@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.leliacat.restaurant_finder.R;
 
-public class DetailsRestoActivity extends AppCompatActivity {
+public class DetailsRestoActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,18 +22,12 @@ public class DetailsRestoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-                Intent backToMapIntent = new Intent(DetailsRestoActivity.this, MapsActivity.class);
-                startActivity(backToMapIntent);
-                }
+        fab.setOnClickListener(this);
+        Button dismissBtn = (Button) findViewById(R.id.details_btn_dismiss);
+        dismissBtn.setOnClickListener(this);
 
-
-                //TODO: get different information to personnalize the info card
-                /*// we get the elements from the popup layout
+               /* //TODO: get different information to personnalize the info card
+                // we get the elements from the popup layout
                 Button dismissBtn = (Button) v.findViewById(R.id.popup_btn_dismiss);
                 Button dismissBtn2 = (Button) v.findViewById(R.id.popup_btn_dismiss2);
                 TextView title = (TextView) v.findViewById(R.id.popup_title);
@@ -50,16 +44,13 @@ public class DetailsRestoActivity extends AppCompatActivity {
                 rating.setText("Rating: " + restaurant.getRating());
                 price.setText("Average cost for two: " + String.valueOf(restaurant.getAverage_cost_for_two()) + restaurant.getCurrency());
                 link.setText("More info on this link: " + "\n" + restaurant.getDetail_link()); */
-        });
+
     }
 
 
-
-    /*@Override
+    @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.popup_btn_dismiss || v.getId() == R.id.popup_btn_dismiss2){
-            //TODO: onclicklisteners for the dismiss btns
-        }*/
-
-
+        Intent backToMapIntent = new Intent(DetailsRestoActivity.this, MapsActivity.class);
+        startActivity(backToMapIntent);
+    }
 }
