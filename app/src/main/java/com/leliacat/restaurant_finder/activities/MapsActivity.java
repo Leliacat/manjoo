@@ -100,6 +100,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 listIntent = new Intent(MapsActivity.this, ListRestoActivity.class);
                 startActivity(listIntent);
+                finish();
             }
         });
 
@@ -108,7 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //**************************************************************  ON STOP *********************************************************************
     @Override
-    protected void onStop() {
+    protected void onPause() {
         super.onStop();
 
         for(Restaurant rst : restosList){
@@ -124,17 +125,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("SERIAL_ERROR", "onStop: " + e );
         }
 
-
-
-
         /*deleteDatabase(Constants.DB_NAME);*/
 
         // Get items from database
         List<Restaurant> restaurants = db.getAllRestaurants();
         String name = restaurants.get(0).getName();
         Restaurant restaurant = restaurants.get(0);
-        Log.d("DB_TEST", "onStop: " + name );
+        Log.d("DB_TEST2", "onStop: " + name );
 
+        if(locationManager !=null)
+            locationManager.removeUpdates(locationListener);
         this.stopLockTask();
     }
 
@@ -162,8 +162,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                 here.setPosition(latLng);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+
+                /* mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));*/
+                /* mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));*/
 
 
                 List results = db.getAllRestaurantsIDs();
@@ -248,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     here.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.mediumpandahead));
                     here.setTag("HERE");
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                   /* mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));*/
+
 
                     // get the 30 best rated restaurants around the user in a radius of 20 km
                     // and add markers on the map where the restaurants are located
@@ -429,7 +430,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             ArrayList<Restaurant> restaurantList = (ArrayList) db.getAllRestaurants();
                             for ( Restaurant rst : restaurantList) {
-                                Log.d("DB_TEST", rst.getName());
+                                Log.d("DB_TEST1", rst.getName());
                             }
 
 
@@ -525,7 +526,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-                            // bouton pour fermer la fenêtre d'info
+                            // boutons pour fermer la fenêtre d'info
                             dismissBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

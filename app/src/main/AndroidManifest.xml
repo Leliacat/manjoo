@@ -42,6 +42,10 @@
         <activity android:name=".activities.RestaurantsListActivity" />
         <activity android:name=".activities.RestoListActivity" />
         <activity android:name=".activities.ListRestoActivity" />
+        <activity
+            android:name=".activities.DetailsRestoActivity"
+            android:label="@string/title_activity_details_resto"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

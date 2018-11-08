@@ -27,14 +27,7 @@
         android:layout_height="match_parent"
         tools:context=".activities.MapsActivity">
 
-
-
-
-
     </fragment>
-
-
-
 
 </RelativeLayout>
 

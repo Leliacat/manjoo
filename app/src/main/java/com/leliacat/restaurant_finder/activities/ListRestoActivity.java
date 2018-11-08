@@ -1,5 +1,6 @@
 package com.leliacat.restaurant_finder.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.leliacat.restaurant_finder.data.DatabaseHandler;
 import com.leliacat.restaurant_finder.model.Restaurant;
@@ -26,7 +28,7 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
     private List<Restaurant> restoList;
     private List<Restaurant> restaurants;
     private DatabaseHandler db;
-    private Bundle extras;
+    /*private Bundle extras;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,36 +42,17 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent backToMapIntent = new Intent(ListRestoActivity.this, MapsActivity.class);
+                startActivity(backToMapIntent);
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
         });
 
-
-
         db = new DatabaseHandler(this);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewID);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
         restaurants =  new ArrayList<>();
-
-       /* Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            Serializable serial = extras.getSerializable("restosList");
-
-            restoList = (ArrayList<Restaurant>) serial;
-
-            Log.d("RESTOLIST_NAMES_2",  restoList.get(0).getName());
-            Log.d("RESTOLIST_NAMES_2",  restoList.get(19).getName());
-        }*/
-
-        /*for(Restaurant rst : restoList){
-            Log.d("RESTOLIST_NAMES_2",  rst.getName());
-        }*/
-
-       // Get items from database
+        restoList = new ArrayList<>();
+        // Get items from database
         restoList = db.getAllRestaurants();
         for (Restaurant place : restoList) {
             Log.d("DATABASE_TEST_LIST", place.getName());
@@ -81,14 +64,35 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
             restaurant.setCategories(resto.getCategories());
             restaurant.setId(resto.getId());
             restaurant.setAverage_cost_for_two(resto.getAverage_cost_for_two());
-
             restaurants.add(restaurant);
         }
 
-        recyclerViewAdapter = new RecyclerViewAdapter(this, restoList);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerViewAdapter.notifyDataSetChanged();
+        if (restoList != null){
+            recyclerView = (RecyclerView) findViewById(R.id.recyclerViewID);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerViewAdapter = new RecyclerViewAdapter(this, restoList);
+            recyclerView.setAdapter(recyclerViewAdapter);
+            recyclerViewAdapter.notifyDataSetChanged();
+        }else {
+            /*Toast.makeText("For some reasons, informations about restaurants can't be reached.",  )*/
+        }
+
+
+
+        // tests for Serializable
+         Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            Serializable serial = extras.getSerializable("restosList");
+            restoList = (ArrayList<Restaurant>) serial;
+            Log.d("RESTOLIST_NAMES_2",  restoList.get(0).getName());
+            Log.d("RESTOLIST_NAMES_2",  restoList.get(19).getName());
+        }
+
+
     }
+
+
 
 }
 
