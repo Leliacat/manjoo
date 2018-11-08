@@ -44,8 +44,6 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
             public void onClick(View view) {
                 Intent backToMapIntent = new Intent(ListRestoActivity.this, MapsActivity.class);
                 startActivity(backToMapIntent);
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
             }
         });
 

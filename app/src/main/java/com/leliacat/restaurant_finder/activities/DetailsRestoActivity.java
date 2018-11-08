@@ -25,8 +25,11 @@ public class DetailsRestoActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                Intent backToMapIntent = new Intent(DetailsRestoActivity.this, MapsActivity.class);
+                startActivity(backToMapIntent);
+                }
 
 
                 //TODO: get different information to personnalize the info card
@@ -47,8 +50,6 @@ public class DetailsRestoActivity extends AppCompatActivity {
                 rating.setText("Rating: " + restaurant.getRating());
                 price.setText("Average cost for two: " + String.valueOf(restaurant.getAverage_cost_for_two()) + restaurant.getCurrency());
                 link.setText("More info on this link: " + "\n" + restaurant.getDetail_link()); */
-
-            }
         });
     }
 

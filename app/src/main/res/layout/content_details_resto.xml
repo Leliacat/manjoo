@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/hamburgerheart" />
+                android:src="@drawable/ramenkawaii" />
 
             <TextView
                 android:id="@+id/details_title"
@@ -46,11 +46,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/details_img_hamburger"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="Restaurant name"
                 android:fontFamily="@font/fredokaone"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textStyle="bold"
                 android:textAlignment="center"/>
 
@@ -65,7 +65,7 @@
             <TextView
                 android:id="@+id/details_specialties"
                 android:text="specialties"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:fontFamily="@font/fredokaone"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
@@ -79,7 +79,7 @@
                 android:id="@+id/details_address"
                 android:text="address"
                 android:textAlignment="center"
-                android:textSize="17sp"
+                android:textSize="19sp"
                 android:layout_below="@+id/details_specialties"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp"
@@ -89,7 +89,7 @@
             <TextView
                 android:id="@+id/details_rating"
                 android:text="rating"
-                android:textSize="17sp"
+                android:textSize="19sp"
                 android:textStyle="bold"
                 android:layout_below="@+id/details_address"
                 android:layout_centerHorizontal="true"
@@ -99,7 +99,8 @@
             <TextView
                 android:id="@+id/details_price"
                 android:text="Average Price for Two: 89$"
-                android:textSize="20sp"
+                android:textSize="23sp"
+                android:textAlignment="center"
                 android:textColor="@color/colorPrimaryDark"
                 android:fontFamily="@font/fredokaone"
                 android:textStyle="bold"
@@ -136,7 +137,9 @@
                 android:textColor="@android:color/white"
                 android:backgroundTint="@color/colorAccent"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_below="@id/details_webview"
+                android:layout_gravity="bottom"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
