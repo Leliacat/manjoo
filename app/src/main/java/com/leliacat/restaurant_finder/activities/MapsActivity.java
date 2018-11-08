@@ -74,7 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Intent listIntent;
     private ArrayList<Restaurant> restosList;
     private Marker here;
-    /*private DatabaseHandler db;*/
+    private DatabaseHandler db;
 
 
     //*************************************************************************************************************************************************
@@ -91,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         restosList = new ArrayList<>();
         mInstance = this;
         queue = Volley.newRequestQueue(this);
-       /* db = new DatabaseHandler(this);*/
+        db = new DatabaseHandler(this);
 
         btnShowList = (Button) findViewById(R.id.map_btn_showlist);
         btnShowList.setOnClickListener(new View.OnClickListener() {
@@ -99,11 +99,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
 
 
-                listIntent = new Intent(MapsActivity.this, RestaurantsListActivity.class);
-                /*Bundle bundle = new Bundle();
+               /* listIntent = new Intent(MapsActivity.this, RestaurantsListActivity.class);
+                *//*Bundle bundle = new Bundle();
                 bundle.putSerializable("ARRAYLIST",restosList);
-                listIntent.putExtra("restosList", bundle);*/
-                startActivity(listIntent);
+                listIntent.putExtra("restosList", bundle);*//*
+                startActivity(listIntent);*/
             }
         });
 
@@ -119,6 +119,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle bundle = new Bundle();
         bundle.putSerializable("ARRAYLIST",restosList);
         listIntent.putExtra("restosList", bundle);
+
+
     }
 
     //*************************************************************************************************************************************************
@@ -148,9 +150,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
-                /*for (Restaurant resto : restosList) {
+                for (Restaurant resto : restosList) {
                     db.deleteRestaurant(resto.getId());
-                }*/
+                }
                 getRestaurants();
                 // Called when a new location is found by the location provider.
                 /*Log.d("GPS_Location", "onLocationChanged: " + location.toString());*/
@@ -227,7 +229,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     here.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.mediumpandahead));
                     here.setTag("HERE");
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                   /* mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));*/
 
                     // get the 30 best rated restaurants around the user in a radius of 20 km
                     // and add markers on the map where the restaurants are located
@@ -249,7 +251,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //*************************************************************************************************************************************************
     // FROM ANDROID DOCUMENTATION :
-    //When the user responds to your app's permission request,
+    // When the user responds to your app's permission request,
     // the system invokes your app's onRequestPermissionsResult() method, passing it the user response.
     // Your app has to override that method to find out whether the permission was granted.
     // The callback is passed the same request code you passed to requestPermissions().
@@ -396,7 +398,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 /*restosList = new ArrayList<>();*/
                                 restosList.add(resto);
-                                /*db.addRestaurant(resto);*/
+                                db.addRestaurant(resto);
 
                             }
 

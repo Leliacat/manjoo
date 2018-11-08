@@ -41,6 +41,7 @@ public class Constants {
     public static final String TABLE_NAME ="restaurantTable";
 
     // Table columns
+    public static final String KEY_PRIMARY = "primary_key";
     public static final String KEY_ID = "id";
     public static final String KEY_RESTO_NAME = "restaurant_name";
     public static final String KEY_RESTO_ADRESS = "restaurant_address";

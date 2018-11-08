@@ -37,6 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RESTAURANT_TABLE = "CREATE TABLE " + Constants.TABLE_NAME + "(" +
+                Constants.KEY_PRIMARY + " INT PRIMARY KEY, " +
                 Constants.KEY_ID + " TEXT, " +
                 Constants.KEY_RESTO_NAME + " TEXT, " +
                 Constants.KEY_RESTO_ADRESS + " TEXT, " +
