@@ -61,8 +61,10 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
                 Restaurant restaurant = new Restaurant();
                 restaurant.setName(resto.getName());
                 restaurant.setCategories(resto.getCategories());
+                restaurant.setAddress(resto.getAddress());
                 restaurant.setId(resto.getId());
                 restaurant.setAverage_cost_for_two(resto.getAverage_cost_for_two());
+                restaurant.setCurrency(resto.getCurrency());
                 restaurants.add(restaurant);
             }
 

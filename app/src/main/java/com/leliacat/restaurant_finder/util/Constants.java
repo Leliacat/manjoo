@@ -44,7 +44,7 @@ public class Constants {
     public static final String KEY_PRIMARY = "primary_key";
     public static final String KEY_ID = "id";
     public static final String KEY_RESTO_NAME = "restaurant_name";
-    public static final String KEY_RESTO_ADRESS = "restaurant_address";
+    public static final String KEY_RESTO_ADDRESS = "restaurant_address";
     public static final String KEY_RESTO_SPECIALTIES = "cuisines";
     public static final String KEY_RESTO_RATING = "rating";
     public static final String KEY_RESTO_AVERAGE_COST_FOR_2 = "average_cost_for_two";

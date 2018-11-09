@@ -4,9 +4,11 @@ package com.leliacat.restaurant_finder.UI;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,10 @@ import com.leliacat.restaurant_finder.data.DatabaseHandler;
 import com.leliacat.restaurant_finder.model.Restaurant;
 import com.leliacat.restaurant_finder.R;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -101,9 +107,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Intent intent = new Intent(context, DetailsRestoActivity.class);
             intent.putExtra("name", restaurant.getName());
             intent.putExtra("specialties", restaurant.getCategories());
-            //TODO : address arraylist of String, has to be serialized
-            /*intent.putExtra("address", restaurant.getAddress().toString());*/
-            intent.putExtra("rating", restaurant.getRating());
+            intent.putExtra("address", restaurant.getAddress().get(0));
+            intent.putExtra("rating", restaurant.getRating().toString());
             intent.putExtra("cost_for_two", String.valueOf(restaurant.getAverage_cost_for_two()));
             intent.putExtra("currency", restaurant.getCurrency());
             intent.putExtra("link", restaurant.getDetail_link());

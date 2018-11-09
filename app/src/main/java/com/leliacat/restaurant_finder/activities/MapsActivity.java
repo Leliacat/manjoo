@@ -52,6 +52,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,6 +119,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("RESTOLIST_NAMES",  rst.getName());
         }
 
+        // serialization of restolist
+        try
+        {
+            FileOutputStream fos = new FileOutputStream("listData");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(restosList);
+            oos.close();
+            fos.close();
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+
+
+        // add serialized array to bundle and and put as intent extra
         Bundle bundle = new Bundle();
         try{
             bundle.putSerializable("ARRAYLIST",restosList);
