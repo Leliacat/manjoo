@@ -107,12 +107,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Intent intent = new Intent(context, DetailsRestoActivity.class);
             intent.putExtra("name", restaurant.getName());
             intent.putExtra("specialties", restaurant.getCategories());
-            intent.putExtra("address", restaurant.getAddress().get(0));
+            intent.putExtra("address", restaurant.getAddress());
+            intent.putExtra("locality", restaurant.getLocality());
+            intent.putExtra("city", restaurant.getCity());
+            intent.putExtra("city_id", restaurant.getCity_id());
+            intent.putExtra("zipcode", restaurant.getZipcode());
+            intent.putExtra("country_id", restaurant.getCountry_id());
+            intent.putExtra("locality_verbose", restaurant.getLocality_verbose());
             intent.putExtra("rating", restaurant.getRating().toString());
             intent.putExtra("cost_for_two", String.valueOf(restaurant.getAverage_cost_for_two()));
             intent.putExtra("currency", restaurant.getCurrency());
             intent.putExtra("link", restaurant.getDetail_link());
             context.startActivity(intent);
+
+
 
         }
     }

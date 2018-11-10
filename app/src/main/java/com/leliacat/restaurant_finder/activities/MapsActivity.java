@@ -95,6 +95,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         /*restosList = new ArrayList<>();*/
         mInstance = this;
         queue = Volley.newRequestQueue(this);
+        /*deleteDatabase(Constants.DB_NAME);*/
         db = new DatabaseHandler(this);
 
         btnShowList = (Button) findViewById(R.id.map_btn_showlist);
@@ -102,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 listIntent = new Intent(MapsActivity.this, ListRestoActivity.class);
+
                 startActivity(listIntent);
                 finish();
             }
@@ -110,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    //**************************************************************  ON STOP *********************************************************************
+
     @Override
     protected void onPause() {
         super.onStop();
@@ -119,39 +121,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("RESTOLIST_NAMES",  rst.getName());
         }
 
-        // serialization of restolist
-        try
-        {
-            FileOutputStream fos = new FileOutputStream("listData");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(restosList);
-            oos.close();
-            fos.close();
-        }
-        catch (IOException ioe)
-        {
-            ioe.printStackTrace();
-        }
+        // Get items from database - TEST
+        /*List<Restaurant> restaurants = db.getAllRestaurants();
+        String name = restaurants.get(2).getName();
+        Log.d("DB_TEST2", "onStop: " + name );*/
 
 
-        // add serialized array to bundle and and put as intent extra
-        Bundle bundle = new Bundle();
-        try{
-            bundle.putSerializable("ARRAYLIST",restosList);
-            listIntent.putExtra("restosList", bundle);
-            Log.d("SERIAL_SUCCESS", "onStop: yeah, c'est dans la boiboite! " );
-        }catch (Exception e) {
-            Log.d("SERIAL_ERROR", "onStop: " + e );
-        }
-
-        /*deleteDatabase(Constants.DB_NAME);*/
-
-        // Get items from database
-        List<Restaurant> restaurants = db.getAllRestaurants();
-        String name = restaurants.get(0).getName();
-        Restaurant restaurant = restaurants.get(0);
-        Log.d("DB_TEST2", "onStop: " + name );
-
+        // arrête le locationlistener quand on quitte l'activité
         if(locationManager !=null)
             locationManager.removeUpdates(locationListener);
         this.stopLockTask();
@@ -163,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // pour rajouter fenêtre d'infos personnalisée sur les markers de restaurants
+        // pour ajouter fenêtre d'infos personnalisée sur les markers de restaurants
         mMap.setInfoWindowAdapter(new CustomInfoWindow((getApplicationContext())));
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerClickListener(this);
@@ -190,6 +166,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (Object idt : results){
                     int key = Integer.parseInt(idt.toString());
                     db.deleteRestaurant(key);
+                    //pour vérifier que la base de données à été vidée
+                    try {
+                        Log.d("DB_VIDE?", "onLocationChanged: " + db.getAllRestaurants().get(0).getName());
+                        Log.d("DB_VIDE?", "onLocationChanged: " + db.getAllRestaurants().get(18).getName());
+                    } catch (Exception e){
+                        Log.d("DB_VIDE?", "onLocationChanged: " + e );
+                    }
                 }
 
                 getRestaurants();
@@ -387,19 +370,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d("RESTO_LATLNG", "onResponse: " + restoCoordinates.toString());
 
                                 // assign value to property address of the Restaurant object
-                                // the JSONobject location have the following properties (that we want to put in the List address) :
-                                // "address", "locality", "city", "city_id", "latitude", "longitude", "zipcode", "country_id", "locality_verbose"
                                 JSONObject location = restaurant.getJSONObject("location");
-                                List<String> restoAddress = new ArrayList<>();
-                                restoAddress.add(location.getString("address"));
-                                restoAddress.add(location.getString("locality"));
-                                restoAddress.add(location.getString("city"));
-                                restoAddress.add(location.getString("city_id"));
-                                restoAddress.add(location.getString("zipcode"));
-                                restoAddress.add(location.getString("country_id"));
-                                restoAddress.add(location.getString("locality_verbose"));
-                                resto.setAddress(restoAddress);
-                                Log.d("RESTO_LOCATION_Address",  resto.getAddress().get(0));
+
+                                resto.setAddress(location.getString("address"));
+                                resto.setLocality(location.getString("locality"));
+                                resto.setCity(location.getString("city"));
+                                resto.setCity_id(location.getString("city_id"));
+                                resto.setZipcode(location.getString("zipcode"));
+                                resto.setCountry_id(location.getString("country_id"));
+                                resto.setLocality_verbose(location.getString("locality_verbose"));
+
+                                Log.d("RESTO_LOCATION_Address",  resto.getAddress());
 
                                 // assign value to category property of the Restaurant object
                                 resto.setCategories(restaurant.getString("cuisines"));

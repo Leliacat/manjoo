@@ -28,7 +28,6 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
     private List<Restaurant> restoList;
     private List<Restaurant> restaurants;
     private DatabaseHandler db;
-    /*private Bundle extras;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,25 +74,10 @@ public class ListRestoActivity extends AppCompatActivity implements Serializable
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerViewAdapter.notifyDataSetChanged();
 
-        } else {
-            /*Toast.makeText("For some reasons, informations about restaurants can't be reached.",  )*/
-        }
-
-
-
-        // tests for Serializable
-         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            Serializable serial = extras.getSerializable("restosList");
-            restoList = (ArrayList<Restaurant>) serial;
-            Log.d("RESTOLIST_NAMES_2",  restoList.get(0).getName());
-            Log.d("RESTOLIST_NAMES_2",  restoList.get(19).getName());
         }
 
 
     }
-
-
 
 }
 

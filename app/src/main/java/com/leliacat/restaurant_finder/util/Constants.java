@@ -45,6 +45,12 @@ public class Constants {
     public static final String KEY_ID = "id";
     public static final String KEY_RESTO_NAME = "restaurant_name";
     public static final String KEY_RESTO_ADDRESS = "restaurant_address";
+    public static final String KEY_RESTO_LOCALITY = "restaurant_locality";
+    public static final String KEY_RESTO_CITY = "restaurant_city";
+    public static final String KEY_RESTO_CITY_ID = "restaurant_city_id";
+    public static final String KEY_RESTO_ZIPCODE = "restaurant_zipcode";
+    public static final String KEY_RESTO_COUNTRY_ID = "restaurant_country_id";
+    public static final String KEY_RESTO_LOCALITY_VERBOSE = "restaurant_locality_verbose";
     public static final String KEY_RESTO_SPECIALTIES = "cuisines";
     public static final String KEY_RESTO_RATING = "rating";
     public static final String KEY_RESTO_AVERAGE_COST_FOR_2 = "average_cost_for_two";

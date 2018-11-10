@@ -1,11 +1,14 @@
 package com.leliacat.restaurant_finder.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Restaurant implements Serializable {
+public class Restaurant implements Parcelable {
 
     private String id;
     private String name;
@@ -13,7 +16,14 @@ public class Restaurant implements Serializable {
     private Double rating;
     private int average_cost_for_two;
     private String currency;
-    private List<String> address;
+    /*private String[] completeAddress;*/
+    private String address;
+    private String locality;
+    private String city;
+    private String city_id;
+    private String zipcode;
+    private String country_id;
+    private String locality_verbose;
     private Double latitude;
     private Double longitude;
     private String detail_link;
@@ -83,9 +93,20 @@ public class Restaurant implements Serializable {
 
 
     public Restaurant() {
+       /* completeAddress = new String[7];
+        completeAddress[0]= address;
+        completeAddress[1]= locality;
+        completeAddress[2]= city;
+        completeAddress[3]= city_id;
+        completeAddress[4]= zipcode;
+        completeAddress[5]= country_id;
+        completeAddress[6]= locality_verbose;*/
     }
 
-
+    //constructor used for parcel
+    public Restaurant(Parcel parcel){
+        //read and set saved values from parcel
+    }
 
     /////////////////////////////////////////////////////////// GETTERS & SETTERS ///////////////////////////////////////////////////
 
@@ -116,14 +137,6 @@ public class Restaurant implements Serializable {
 
     public void setAverage_cost_for_two(int average_cost_for_two) { this.average_cost_for_two = average_cost_for_two; }
 
-    public List<String> getAddress() {
-        return address;
-    }
-
-    public void setAddress(List<String> address) {
-        this.address = address;
-    }
-
     public String getCategories() {
         return categories;
     }
@@ -151,4 +164,123 @@ public class Restaurant implements Serializable {
     public Double getLongitude() { return longitude; }
 
     public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+   /* public String[] getCompleteAddress() {
+        return completeAddress;
+    }
+
+    public void setCompleteAddress(String[] completeAddress) {
+        this.completeAddress = completeAddress;
+    }*/
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(String city_id) {
+        this.city_id = city_id;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getCountry_id() {
+        return country_id;
+    }
+
+    public void setCountry_id(String country_id) {
+        this.country_id = country_id;
+    }
+
+    public String getLocality_verbose() {
+        return locality_verbose;
+    }
+
+    public void setLocality_verbose(String locality_verbose) {
+        this.locality_verbose = locality_verbose;
+    }
+
+
+
+    //**************************************************  METHODS FROM PARCELABLE ********************************************************
+
+    @Override
+    //return hashcode of object
+    public int describeContents() {
+        return hashCode();
+    }
+
+
+    @Override
+    //write object values to parcel for storage
+    public void writeToParcel(Parcel dest, int flags) {
+        //write all properties to the parcel
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(categories);
+        dest.writeString(address);
+        dest.writeString(locality);
+        dest.writeString(city);
+        dest.writeString(city_id);
+        dest.writeString(zipcode);
+        dest.writeString(country_id);
+        dest.writeString(locality_verbose);
+        /*dest.writeStringArray(completeAddress);*/
+        dest.writeDouble(rating);
+        dest.writeInt(average_cost_for_two);
+        dest.writeValue(currency);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(detail_link);
+
+    }
+
+
+    //creator - used when un-parceling our parcle (creating the object)
+    public static final Parcelable.Creator<Restaurant> CREATOR = new Parcelable.Creator<Restaurant>(){
+
+        @Override
+        public Restaurant createFromParcel(Parcel parcel) {
+            return new Restaurant(parcel);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[0];
+        }
+    };
+
+
+
+
+
 }

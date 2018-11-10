@@ -31,7 +31,13 @@ public class DetailsRestoActivity extends AppCompatActivity implements View.OnCl
 
         // put onclick listeners on different buttons
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backToMapIntent = new Intent(DetailsRestoActivity.this, MapsActivity.class);
+                startActivity(backToMapIntent);
+            }
+        });
         Button dismissBtn = (Button) findViewById(R.id.details_btn_dismiss);
         Button dismissBtn2 = (Button) findViewById(R.id.details_btn_dismiss2);
         dismissBtn.setOnClickListener(this);
@@ -70,7 +76,7 @@ public class DetailsRestoActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        Intent backToMapIntent = new Intent(DetailsRestoActivity.this, MapsActivity.class);
-        startActivity(backToMapIntent);
+        Intent backToListIntent = new Intent(DetailsRestoActivity.this, ListRestoActivity.class);
+        startActivity(backToListIntent);
     }
 }
