@@ -23,11 +23,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/main_text_gotomap"
@@ -38,15 +40,17 @@
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/fredokaone"
             android:text="Find restaurant on map"
+            android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/main_img_map"
-            android:layout_width="167dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/main_text_gotomap"
             android:layout_centerHorizontal="true"
+            android:onClick="goToMap"
             app:srcCompat="@drawable/kawaiiearthmap" />
 
 
@@ -57,6 +61,7 @@
             android:layout_below="@+id/main_img_map"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/fredokaone"
             android:text="Take a food porn pic"
             android:textColor="@color/colorPrimary"
@@ -68,6 +73,7 @@
             android:layout_height="114dp"
             android:layout_below="@+id/main_text_takepic"
             android:layout_centerHorizontal="true"
+            android:onClick="goTakePic"
             app:srcCompat="@drawable/kawaiicamera" />
 
 
@@ -87,11 +93,12 @@
         <ImageView
             android:id="@+id/main_img_gallery"
             android:layout_width="wrap_content"
-            android:layout_height="89dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/main_text_gallery"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="49dp"
+            android:layout_marginBottom="40dp"
+            android:onClick="goGallery"
             android:src="@drawable/galleryicon" />
 
     </RelativeLayout>

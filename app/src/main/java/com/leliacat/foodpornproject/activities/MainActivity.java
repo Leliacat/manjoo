@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import com.leliacat.foodpornproject.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,13 +16,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void goTakePic(View view)
     {
-        Intent goToTakePic=new Intent(this,TakePic.class);
+        Intent goToTakePic = new Intent(this,TakePic.class);
         startActivity(goToTakePic);
     }
 
     public void goGallery(View view)
     {
-        Intent goToGallery=new Intent(this,Gallery.class);
+        Intent goToGallery = new Intent(this,Gallery.class);
         startActivity(goToGallery);
     }
+
+    public void goToMap(View view)
+    {
+        Intent goToMap = new Intent(this,MapsActivity.class);
+        startActivity(goToMap);
+    }
+
 }

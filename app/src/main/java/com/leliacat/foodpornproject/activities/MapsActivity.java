@@ -114,9 +114,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onPause() {
         super.onStop();
 
-        for(Restaurant rst : restosList){
-            Log.d("RESTOLIST_NAMES",  rst.getName());
+        if (restosList != null ){
+            for(Restaurant rst : restosList){
+                Log.d("RESTOLIST_NAMES",  rst.getName());
+            }
         }
+
 
         // Get items from database - TEST
         /*List<Restaurant> restaurants = db.getAllRestaurants();
