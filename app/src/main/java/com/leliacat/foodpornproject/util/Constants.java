@@ -56,16 +56,6 @@ public class Constants {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-///////////////////////////////////////////// CONSTANTS for OTHER STUFF ////////////////////////////////////////////////////////////////////////////
-
-    // we will use it to get a random index in the list of restaurants
-    public static Restaurant getRandomRestaurant(ArrayList<Restaurant> arrayList) {
-        int randomIndex = new Random().nextInt(arrayList.size());
-        Restaurant chosenResto = arrayList.get(randomIndex);
-        return chosenResto;
-    }
-
     // model of response from Zomato API for the request "resto details".
       /*{
                                 "R": {

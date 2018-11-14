@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, Serializable {
@@ -123,14 +124,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
-
         // Get items from database - TEST
         /*List<Restaurant> restaurants = db.getAllRestaurants();
         String name = restaurants.get(2).getName();
         Log.d("DB_TEST2", "onStop: " + name );*/
 
 
-        // arrête le locationlistener quand on quitte l'activité
+        // stop the locationlistener when we leave the map activity
         if(locationManager !=null)
             locationManager.removeUpdates(locationListener);
         this.stopLockTask();
@@ -164,7 +164,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 /* mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));*/
                 /* mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));*/
 
-
                 List results = db.getAllRestaurantsIDs();
                 for (Object idt : results){
                     int key = Integer.parseInt(idt.toString());
@@ -177,10 +176,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.d("DB_VIDE?", "onLocationChanged: " + e );
                     }
                 }
-
-                getRestaurants();
                 // Called when a new location is found by the location provider.
-                /*Log.d("GPS_Location", "onLocationChanged: " + location.toString());*/
+                getRestaurants();
             }
 
             @Override
@@ -273,7 +270,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void onShakesDetected() {
                             if (restosList != null){
-                                Restaurant chosenResto = Constants.getRandomRestaurant(restosList);
+                                // we will use it to get a random index in the list of restaurants
+                                int randomIndex = new Random().nextInt(restosList.size());
+                                Restaurant chosenResto = restosList.get(randomIndex);
                                 Intent intentRandom = new Intent(MapsActivity.this, DetailsRestoActivity.class);
                                 intentRandom.putExtra("name", chosenResto.getName());
                                 intentRandom.putExtra("specialties", chosenResto.getCategories());
@@ -363,8 +362,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String lat = String.valueOf(currentLocation.getLatitude());
         String lng = String.valueOf(currentLocation.getLongitude());
 
-        // permet de passer dans l'URL les coordonnées de la position actuelle,
-        // pour chercher les restaurants autour de l'utilisateur
+        // useful to pass coordinates of the user's current location into the URL
+        // this way the response gives us the restaurants located around the user
         String CUSTOM_URL = Constants.URL
                 + Constants.LIMIT
                 + Constants.URL_COMPLEMENT_1 + lat
