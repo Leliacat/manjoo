@@ -16,8 +16,8 @@ public class ImageInfo {
     public ImageInfo(String titre, Bitmap image)
     {
 
-        this.titre=titre;
-        this.image=image;
+        this.titre = titre;
+        this.image = image;
     }
 
     //III.Accesseurs

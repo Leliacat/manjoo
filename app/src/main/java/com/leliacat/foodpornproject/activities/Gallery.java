@@ -22,9 +22,9 @@ import java.util.List;
 public class Gallery extends AppCompatActivity {
 
 
-    // on cree une variable globale nous permettant de connaître a tout moment l'index du numero de l'item sur lequel l'utilisateur a cliqué.
+    // on cree une variable globale nous permettant de connaître a tout moment l'index du numero de l'item sur lequel l'utilisateur a cliqué
     public static String positionItem = "";
-    // Nous sert à enregistrer les noms de nos differentes images;
+    // Nous sert à enregistrer les noms de nos differentes images
     String[] nomImage;
     // Une liste d'objets nous permettant d'associer une image avec un titre
     private List<ImageInfo> tableauImage = new ArrayList<ImageInfo>();
@@ -34,13 +34,11 @@ public class Gallery extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        Log.w("DEBUGGIRL", "gallery: intent créé ");
-
         // On utilise un wrapper pour récupérer notre fichier image
         ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
         File fichier = wrapper.getDir("Images", MODE_PRIVATE);
 
-        // on génère la liste des noms de nos différentes images .
+        // on génère la liste des noms de nos différentes images
         nomImage = fichier.list();
 
         chargerTableauImage();
@@ -53,10 +51,11 @@ public class Gallery extends AppCompatActivity {
         galerie.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { //Si l'utilisateur réalise un click long
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                ContextWrapper wrapper = new ContextWrapper(getApplicationContext()); // On utilise un wrapper pour récupérer notre fichier image.
+                // On utilise un wrapper pour récupérer notre fichier image.
+                ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
                 File fichier = wrapper.getDir("Images", MODE_PRIVATE);
 
-                //On créer un dossier indiquant le chemin de l'image correspondant à l'item selectionné.
+                //On créer un dossier indiquant le chemin de l'image correspondant à l'item selectionné.$
                 File cheminImage = new File(fichier, nomImage[position]);
                 boolean supression = cheminImage.delete(); //supprime l'image
                 recreate();

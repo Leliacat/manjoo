@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     public void goGallery(View view)
     {
         Intent goToGallery = new Intent(this, Gallery.class);
-        Log.w("DEBUGGIRL", "goGallery: intent créé ");
         startActivity(goToGallery);
     }
 
