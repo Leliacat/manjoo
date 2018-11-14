@@ -42,6 +42,7 @@
         <activity android:name=".activities.TakePic" />
         <activity android:name="com.leliacat.foodpornproject.activities.MapsActivity"/>
         <activity android:name= "com.leliacat.foodpornproject.activities.ListRestoActivity" />
+        <activity android:name=".activities.Gallery" />
         <activity
             android:name="com.leliacat.foodpornproject.activities.DetailsRestoActivity"
             android:label="@string/title_activity_details_resto"

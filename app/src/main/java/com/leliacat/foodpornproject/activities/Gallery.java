@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -20,23 +21,32 @@ import java.util.List;
 
 public class Gallery extends AppCompatActivity {
 
-    public static String positionItem = ""; //on creer une variable globale nous permettant de connaître a tout moment l'index du numero de l'item sur lequel l'utilisateur à cliqué.
-    String[] nomImage; //Nous sert à enregistrer les noms de nos differentes images;
-    private List<ImageInfo> tableauImage = new ArrayList<ImageInfo>(); // Une liste d'objet nous permettant d'associer une image avec un titre
+
+    // on cree une variable globale nous permettant de connaître a tout moment l'index du numero de l'item sur lequel l'utilisateur a cliqué.
+    public static String positionItem = "";
+    // Nous sert à enregistrer les noms de nos differentes images;
+    String[] nomImage;
+    // Une liste d'objets nous permettant d'associer une image avec un titre
+    private List<ImageInfo> tableauImage = new ArrayList<ImageInfo>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        ContextWrapper wrapper = new ContextWrapper(getApplicationContext()); // On utilise un wrapper pour récupérer notre fichier image.
+        Log.w("DEBUGGIRL", "gallery: intent créé ");
+
+        // On utilise un wrapper pour récupérer notre fichier image
+        ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
         File fichier = wrapper.getDir("Images", MODE_PRIVATE);
 
-        nomImage = fichier.list(); // on génère la liste des noms de nos différentes images .
+        // on génère la liste des noms de nos différentes images .
+        nomImage = fichier.list();
 
         chargerTableauImage();
 
-        ListAdapter galerieAdpater = new CustomAdapter(this, tableauImage); // On passe notre objet à notre adapteur.
+        // On passe notre objet à notre adapteur.
+        ListAdapter galerieAdpater = new CustomAdapter(this, tableauImage);
         final ListView galerie = (ListView) findViewById(R.id.gallery_listview_id);
         galerie.setAdapter(galerieAdpater);
 
@@ -45,7 +55,9 @@ public class Gallery extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 ContextWrapper wrapper = new ContextWrapper(getApplicationContext()); // On utilise un wrapper pour récupérer notre fichier image.
                 File fichier = wrapper.getDir("Images", MODE_PRIVATE);
-                File cheminImage = new File(fichier, nomImage[position]); //On créer un dossier indiquant le chemin de l'image correspondant à l'item selectionné.
+
+                //On créer un dossier indiquant le chemin de l'image correspondant à l'item selectionné.
+                File cheminImage = new File(fichier, nomImage[position]);
                 boolean supression = cheminImage.delete(); //supprime l'image
                 recreate();
                 return true;
@@ -65,7 +77,6 @@ public class Gallery extends AppCompatActivity {
             try {
                 File cheminImage = new File(fichier, nomImage[i]); //On ouvre chaque image disponible dans notre stockage interne
                 image = BitmapFactory.decodeFile(cheminImage.getPath());//
-
             } catch (Exception e) {
 
             }

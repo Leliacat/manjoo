@@ -42,7 +42,7 @@
             android:text="Find restaurant on map"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            android:textSize="23sp" />
 
         <ImageView
             android:id="@+id/main_img_map"
@@ -65,7 +65,7 @@
             android:fontFamily="@font/fredokaone"
             android:text="Take a food porn pic"
             android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            android:textSize="23sp" />
 
         <ImageView
             android:id="@+id/main_img_camera"
@@ -88,7 +88,7 @@
             android:fontFamily="@font/fredokaone"
             android:text="Go to gallery"
             android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            android:textSize="23sp" />
 
         <ImageView
             android:id="@+id/main_img_gallery"
