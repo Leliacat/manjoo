@@ -269,6 +269,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     accelerometer = new Accelerometer(this, new Accelerometer.MyCallBackInterface() {
                         @Override
                         public void onShakesDetected() {
+                            Log.d("SHAKE_BABY", "onShakesDetected: I've just been shaked, love it!");
                             if (restosList != null){
                                 // we will use it to get a random index in the list of restaurants
                                 int randomIndex = new Random().nextInt(restosList.size());

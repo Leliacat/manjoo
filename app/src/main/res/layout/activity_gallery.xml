@@ -5,7 +5,7 @@
     android:id="@+id/gallery_layout_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/vichy_background"
+    android:background="@drawable/vichy_background_transparent"
     tools:context=".activities.Gallery">
 
     <ListView
