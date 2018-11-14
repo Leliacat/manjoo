@@ -1,5 +1,8 @@
 package com.leliacat.foodpornproject.util;
 
+import com.leliacat.foodpornproject.model.Restaurant;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Constants {
@@ -57,8 +60,10 @@ public class Constants {
 ///////////////////////////////////////////// CONSTANTS for OTHER STUFF ////////////////////////////////////////////////////////////////////////////
 
     // we will use it to get a random index in the list of restaurants
-    public static int randomInt(int max, int min) {
-        return new Random().nextInt(max - min) + min;
+    public static Restaurant getRandomRestaurant(ArrayList<Restaurant> arrayList) {
+        int randomIndex = new Random().nextInt(arrayList.size());
+        Restaurant chosenResto = arrayList.get(randomIndex);
+        return chosenResto;
     }
 
     // model of response from Zomato API for the request "resto details".

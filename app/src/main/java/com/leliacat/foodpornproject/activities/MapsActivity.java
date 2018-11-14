@@ -46,7 +46,9 @@ import com.leliacat.foodpornproject.R;
 import com.leliacat.foodpornproject.UI.CustomInfoWindow;
 import com.leliacat.foodpornproject.data.DatabaseHandler;
 import com.leliacat.foodpornproject.model.Restaurant;
+import com.leliacat.foodpornproject.util.Accelerometer;
 import com.leliacat.foodpornproject.util.Constants;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,6 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Restaurant> restosList;
     private Marker here;
     private DatabaseHandler db;
+    private Accelerometer accelerometer;
 
 
     //****************************************************************  ON CREATE **********************************************************************
@@ -265,6 +268,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mTardis.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.tardis));
                     mTardis.setDraggable(true);
                     mTardis.setTag("TARDIS");
+
+                    accelerometer = new Accelerometer(this, new Accelerometer.MyCallBackInterface() {
+                        @Override
+                        public void onShakesDetected() {
+                            if (restosList != null){
+                                Restaurant chosenResto = Constants.getRandomRestaurant(restosList);
+                                Intent intentRandom = new Intent(MapsActivity.this, DetailsRestoActivity.class);
+                                intentRandom.putExtra("name", chosenResto.getName());
+                                intentRandom.putExtra("specialties", chosenResto.getCategories());
+                                intentRandom.putExtra("address", chosenResto.getAddress());
+                                intentRandom.putExtra("locality", chosenResto.getLocality());
+                                intentRandom.putExtra("city", chosenResto.getCity());
+                                intentRandom.putExtra("city_id", chosenResto.getCity_id());
+                                intentRandom.putExtra("zipcode", chosenResto.getZipcode());
+                                intentRandom.putExtra("country_id", chosenResto.getCountry_id());
+                                intentRandom.putExtra("locality_verbose", chosenResto.getLocality_verbose());
+                                intentRandom.putExtra("rating", chosenResto.getRating().toString());
+                                intentRandom.putExtra("cost_for_two", String.valueOf(chosenResto.getAverage_cost_for_two()));
+                                intentRandom.putExtra("currency", chosenResto.getCurrency());
+                                intentRandom.putExtra("link", chosenResto.getDetail_link());
+                                mInstance.startActivity(intentRandom);
+                            }
+
+                        }
+                    });
+
+
                 }
             }
         }
