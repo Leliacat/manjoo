@@ -258,7 +258,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     getRestaurants();
 
                     //add a TARDIS
-                    // you think it's too big ? who cares ? this app is just an exercise, so take it easy, alright ?
+                    // you think it's too big ? this app is just an exercise, so take it easy, alright ?
                     Marker mTardis = mMap.addMarker(new MarkerOptions()
                             .position(ARCTIC)
                             .title("Run!"));
@@ -489,7 +489,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
 
         // Adding the request to the queue along with a unique string tag
-        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
+        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "Request_allRestaurants" );
         // it equals to :   queue.add(jsonObjectRequest);
 
     }
@@ -591,7 +591,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
 
         // Adding the request to the queue along with a unique string tag
-        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
+        MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "Request_restaurantDetails" );
     }
 
 
