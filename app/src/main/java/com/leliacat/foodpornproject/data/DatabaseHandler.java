@@ -1,4 +1,4 @@
-package com.leliacat.restaurant_finder.data;
+package com.leliacat.foodpornproject.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.leliacat.restaurant_finder.model.Restaurant;
-import com.leliacat.restaurant_finder.util.Constants;
+import com.leliacat.foodpornproject.model.Restaurant;
+import com.leliacat.foodpornproject.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

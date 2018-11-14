@@ -1,12 +1,7 @@
-package com.leliacat.restaurant_finder.model;
+package com.leliacat.foodpornproject.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.io.Serializable;
-import java.util.List;
 
 public class Restaurant implements Parcelable {
 

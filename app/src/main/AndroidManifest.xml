@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.leliacat.restaurant_finder">
+    package="com.leliacat.foodpornproject">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -41,9 +41,9 @@
         </activity>
         <activity android:name=".activities.RestaurantsListActivity" />
         <activity android:name=".activities.RestoListActivity" />
-        <activity android:name=".activities.ListRestoActivity" />
+        <activity android:name="com.leliacat.foodpornproject.activities.ListRestoActivity" />
         <activity
-            android:name=".activities.DetailsRestoActivity"
+            android:name="com.leliacat.foodpornproject.activities.DetailsRestoActivity"
             android:label="@string/title_activity_details_resto"
             android:theme="@style/AppTheme"></activity>
     </application>

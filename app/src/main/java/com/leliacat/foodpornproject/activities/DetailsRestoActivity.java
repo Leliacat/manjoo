@@ -1,9 +1,8 @@
-package com.leliacat.restaurant_finder.activities;
+package com.leliacat.foodpornproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -11,11 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.leliacat.restaurant_finder.R;
-import com.leliacat.restaurant_finder.model.Restaurant;
-
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.leliacat.foodpornproject.R;
 
 public class DetailsRestoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,8 +49,6 @@ public class DetailsRestoActivity extends AppCompatActivity implements View.OnCl
         TextView address = (TextView) findViewById(R.id.details_address);
         TextView price = (TextView) findViewById(R.id.details_price);
         TextView link = (TextView) findViewById(R.id.details_textlink);
-
-
 
 
         // we fill layout elements with desired text with infos from extras

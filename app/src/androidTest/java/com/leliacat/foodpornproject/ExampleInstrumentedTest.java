@@ -1,4 +1,4 @@
-package com.leliacat.restaurant_finder;
+package com.leliacat.foodpornproject;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

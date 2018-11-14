@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">Restaurant_Finder</string>
+    <string name="app_name">FoodPornProject</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_details_resto">DetailsRestoActivity</string>
+    <string name="find_restaurant_on_map">Find restaurant on map</string>
+    <string name="take_a_food_porn_pic">Take a food porn pic</string>
+    <string name="go_to_gallery">Go to gallery</string>
+    <string name="todo">TODO</string>
+    <string name="titreimage">titreImage</string>
+
 </resources>

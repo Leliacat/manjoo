@@ -1,4 +1,4 @@
-package com.leliacat.restaurant_finder.activities;
+package com.leliacat.foodpornproject.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -42,11 +42,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.leliacat.restaurant_finder.R;
-import com.leliacat.restaurant_finder.UI.CustomInfoWindow;
-import com.leliacat.restaurant_finder.data.DatabaseHandler;
-import com.leliacat.restaurant_finder.model.Restaurant;
-import com.leliacat.restaurant_finder.util.Constants;
+import com.leliacat.foodpornproject.R;
+import com.leliacat.foodpornproject.UI.CustomInfoWindow;
+import com.leliacat.foodpornproject.data.DatabaseHandler;
+import com.leliacat.foodpornproject.model.Restaurant;
+import com.leliacat.foodpornproject.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,10 +92,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        /*restosList = new ArrayList<>();*/
         mInstance = this;
         queue = Volley.newRequestQueue(this);
-        /*deleteDatabase(Constants.DB_NAME);*/
+        /* deleteDatabase(Constants.DB_NAME);*/
         db = new DatabaseHandler(this);
 
         btnShowList = (Button) findViewById(R.id.map_btn_showlist);
@@ -108,8 +107,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
-
-
     }
 
 
@@ -139,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // pour ajouter fenêtre d'infos personnalisée sur les markers de restaurants
+        //to add personnalized infowindows on restaurants' markers
         mMap.setInfoWindowAdapter(new CustomInfoWindow((getApplicationContext())));
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerClickListener(this);
@@ -166,7 +163,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (Object idt : results){
                     int key = Integer.parseInt(idt.toString());
                     db.deleteRestaurant(key);
-                    //pour vérifier que la base de données à été vidée
+                    // to check if database has been emptied
                     try {
                         Log.d("DB_VIDE?", "onLocationChanged: " + db.getAllRestaurants().get(0).getName());
                         Log.d("DB_VIDE?", "onLocationChanged: " + db.getAllRestaurants().get(18).getName());
@@ -203,11 +200,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
-                //we ask for permisssion
+                // we ask for permisssion
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 return;
             } else {
-                //we have permission!
+                // we have permission!
 
                 // Register the listener with the Location Manager to receive location updates
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -333,7 +330,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String lat = String.valueOf(currentLocation.getLatitude());
         String lng = String.valueOf(currentLocation.getLongitude());
 
-        // permet de passer dans l'URL les coordonnées de la position actuelle, pour chercher les restaurants autour de l'utilisateur
+        // permet de passer dans l'URL les coordonnées de la position actuelle,
+        // pour chercher les restaurants autour de l'utilisateur
         String CUSTOM_URL = Constants.URL
                 + Constants.LIMIT
                 + Constants.URL_COMPLEMENT_1 + lat
@@ -369,9 +367,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 LatLng restoCoordinates = new LatLng(resto.getLatitude(),resto.getLongitude());
                                 Log.d("RESTO_LATLNG", "onResponse: " + restoCoordinates.toString());
 
-                                // assign value to property address of the Restaurant object
-                                JSONObject location = restaurant.getJSONObject("location");
 
+                                JSONObject location = restaurant.getJSONObject("location");
+                                // assign value to properties related to address of the Restaurant object
                                 resto.setAddress(location.getString("address"));
                                 resto.setLocality(location.getString("locality"));
                                 resto.setCity(location.getString("city"));
@@ -379,7 +377,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 resto.setZipcode(location.getString("zipcode"));
                                 resto.setCountry_id(location.getString("country_id"));
                                 resto.setLocality_verbose(location.getString("locality_verbose"));
-
                                 Log.d("RESTO_LOCATION_Address",  resto.getAddress());
 
                                 // assign value to category property of the Restaurant object
@@ -408,7 +405,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 resto.setDetail_link(restaurant.getString("url"));
                                 Log.d("RESTO_URL", resto.getDetail_link());
 
-                                //add Marker to map
+                                // add Marker to map
                                 MarkerOptions markerOptions = new MarkerOptions();
                                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
                                 markerOptions.title(resto.getName());
@@ -453,15 +450,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 headers.put("user-key", Constants.API_KEY);
                 return headers;
             }
-            //to understand how to add a header to the request I used those links:
+            // to understand how to add a header to the request I used those links:
             // https://stackoverflow.com/questions/17049473/how-to-set-custom-header-in-volley-request
             // https://stackoverflow.com/questions/35218464/volley-jsonobjectrequest-send-headers-in-get-request
 
         };
 
-        //Adding the request to the queue along with a unique string tag
+        // Adding the request to the queue along with a unique string tag
         MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
-        /* queue.add(jsonObjectRequest);*/
+        // it equals to :   queue.add(jsonObjectRequest);
 
     }
 
@@ -469,7 +466,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //////////////////////////////////////////////////// OTHER METHODS WITH API REQUESTS ////////////////////////////////////////////////////////
     //*************************************************************************************************************************************************
     // allow to get more details about a specific restaurant
-    // exemple d'URL https://developers.zomato.com/api/v2.1/restaurant?res_id=16774318
+    // example URL  https://developers.zomato.com/api/v2.1/restaurant?res_id=16774318
+    // alternative solution (better maybe) would be to pass the object resto into the marker tag
+    // and then get back the informations from there
     public void getRestaurantDetails(String id) {
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Constants.URL_RESTO_DETAILS + id , new JSONObject(),
@@ -496,11 +495,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             TextView link = (TextView) view.findViewById(R.id.popup_textlink);
 
                             JSONObject location = response.getJSONObject("location");
-                            /*StringBuilder completeAddress = new StringBuilder();*/
-
 
                             title.setText(response.getString("name"));
                             specialties.setText(response.getString("cuisines"));
+                            /* I could/should have used a : StringBuilder completeAddress = new StringBuilder();
+                            * Stringbuilder.append() */
                             String completeAddress =
                                     location.getString("address")+ "\n" +
                                     location.getString("locality")+ "\n" +
@@ -523,10 +522,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             webView.getSettings().setJavaScriptEnabled(true);
                             webView.setWebViewClient(new WebViewClient());
                             webView.loadUrl(weblink);*/
+                            // I decided to remove it, because it was not an elegant solution,
+                            // just keeping the code as a model if I want to use it later for something else
 
-
-
-                            // boutons pour fermer la fenêtre d'info
+                            // buttons to close the popup
                             dismissBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -559,7 +558,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        //Adding the request to the queue along with a unique string tag
+        // Adding the request to the queue along with a unique string tag
         MapsActivity.getInstance().addToRequestQueue(jsonObjectRequest, "headerRequest" );
     }
 

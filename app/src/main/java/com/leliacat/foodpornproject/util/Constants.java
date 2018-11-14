@@ -1,12 +1,4 @@
-package com.leliacat.restaurant_finder.util;
-
-import android.content.Intent;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.leliacat.restaurant_finder.model.Restaurant;
+package com.leliacat.foodpornproject.util;
 
 import java.util.Random;
 
@@ -20,14 +12,14 @@ public class Constants {
     public static final String API_KEY = "deb242b665c4d425be528ddd7cc969e8";
     public static final String URL = "https://developers.zomato.com/api/v2.1/search?";
 
-    // defines the maximum of restaurnats we want in the request, here we have set it to 30
+    // defines the maximum of restaurants we want in the request, here we have set it to 30
     public static final String LIMIT = "count=30";
     //to make custom requests according to user location
-    public static final String URL_COMPLEMENT_1 = "&lat=";   // permet d'ajouter une latitude spécifique
-    public static final String URL_COMPLEMENT_2 = "&lon=";   // pour ajouter une longitude spécifique
+    public static final String URL_COMPLEMENT_1 = "&lat=";   // allows to add a specific latitude
+    public static final String URL_COMPLEMENT_2 = "&lon=";   // allows to add a specific longitude
     public static final String URL_COMPLEMENT_3 = "&radius=10000&sort=rating&order=desc";
-    // limite le champ de recherche à rayon de 5000 mètres autour des coordonnées définies précédemment
-    // range les résultats en fonction des notes, du plus grand au plus petit
+    // limits the radius of research to 10000 meters around the coordinates defined precedently
+    // orders results according to rating, from the higher to the lower
 
 
    public static final String URL_RESTO_DETAILS = "https://developers.zomato.com/api/v2.1/restaurant?res_id=";
@@ -41,7 +33,6 @@ public class Constants {
     public static final String TABLE_NAME ="restaurantTable";
 
     // Table columns
-    public static final String KEY_PRIMARY = "primary_key";
     public static final String KEY_ID = "id";
     public static final String KEY_RESTO_NAME = "restaurant_name";
     public static final String KEY_RESTO_ADDRESS = "restaurant_address";
@@ -70,7 +61,7 @@ public class Constants {
         return new Random().nextInt(max - min) + min;
     }
 
-    //modele de reponse pour requête resto details
+    // model of response from Zomato API for the request "resto details".
       /*{
                                 "R": {
                                 "res_id": 16774318
